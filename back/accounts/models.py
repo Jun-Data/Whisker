@@ -4,7 +4,7 @@ from allauth.account.adapter import DefaultAccountAdapter
 
 class User(AbstractUser):
     nickname = models.CharField(max_length=100)
-    age = models.IntegerField()
+    age = models.IntegerField(null=True, blank=True, default=0)
 
 class CustomAccountAdapter(DefaultAccountAdapter):
     def save_user(self, request, user, form, commit=True):

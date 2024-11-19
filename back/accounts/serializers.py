@@ -15,6 +15,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     )
     age = serializers.IntegerField(
         required=False,
+
     )
 
     # 해당 필드도 저장 시 함께 사용하도록 설정합니다.
