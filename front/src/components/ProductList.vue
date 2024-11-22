@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table>
+    <table class="container">
       <thead>
         <tr>
           <th>유형</th>
@@ -13,22 +13,13 @@
         </tr>
       </thead>
       <tbody>
-        
         <ProductListItem
         v-for="product in products"
         :key="product.id"
         :product="product"/>
-  
       </tbody>
     </table>
   </div>
-  <!-- <div>
-    
-    <ProductListItem
-    v-for="product in products"
-    :key="product.id"
-    :product="product"/>
-  </div> -->
 </template>
 
 <script setup>
@@ -63,5 +54,8 @@
 </script>
 
 <style scoped>
-
+  .container{
+    text-align: center;
+    margin: 0 auto;
+  }
 </style>

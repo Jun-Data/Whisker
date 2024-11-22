@@ -2,7 +2,8 @@
   <header class="header">
     <div class="left-section">
       <span v-if="store.isLogin" class="welcome-text">환영합니다 {{ store.user }}님!</span>
-      <span v-if="store.isLogin" class="logout-link" @click="logOut">로그아웃</span>
+      <span v-if="store.isLogin" class="logout-link" @click="openModal">로그아웃</span>
+      
     </div>
     <nav class="navbar">
       <RouterLink 
@@ -61,8 +62,18 @@
         :class="{ active: selectedNav === 'ProfileView' }"
         @click="handleNavClick('ProfileView')">내 프로필</RouterLink>
     </nav>
+    
   </header>
   <main class="main-content">
+    <Modal :isOpen="isModalOpened" @modal-close="closeModal" @submit="submitHandler" name="first-modal">
+      <template #header>Custom header</template>
+      <template #content>
+        <p>로그아웃?</p>
+        <button @click="logOut">ㅇㅇ</button>
+        <button @click="closeModal">ㄴㄴ</button>
+      </template>
+      <template #footer>Custom content</template>
+    </Modal>
     <RouterView />
   </main>
 </template>
@@ -74,9 +85,21 @@
 import { RouterView, RouterLink, useRoute } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
 import { ref } from 'vue';
+import Modal from './components/Modal.vue';
 
 const store = useCounterStore();
+const isModalOpened = ref(false);
 
+const openModal = () => {
+  isModalOpened.value = true;
+};
+const closeModal = () => {
+  isModalOpened.value = false;
+};
+
+const submitHandler = ()=>{
+  //here you do whatever
+}
 // 현재 경로 추적
 const currentRoute = useRoute();
 
@@ -86,6 +109,7 @@ const selectedNav = ref(null);
 // 로그아웃 처리
 const logOut = () => {
   store.logOut();
+  if (isModalOpened) closeModal()
 };
 
 // 메뉴 클릭 시 선택된 메뉴 상태 업데이트

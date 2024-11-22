@@ -2,8 +2,8 @@
   <div>
     <h1>예적금 상품 조회</h1>
 
-    <section>
-      <div>
+    <section class="container">
+      <div class="query">
         <form @submit.prevent="filterProducts">
           <input type="text" v-model="keyword">
           <input type="submit">
@@ -27,7 +27,8 @@
   import ProductList from '@/components/ProductList.vue';
   import { onMounted } from 'vue';
   import { ref, computed } from 'vue';
-
+import { Chart, registerables } from 'chart.js'
+Chart.register(...registerables)
   const store = useProductStore()
   const keyword = ref(null)
   const filterProducts = () => {
@@ -56,8 +57,6 @@
   const currentProducts = computed(() => {
     return store.products.slice(startIndex.value, endIndex.value)
   })
-  console.log(totalPages.value, endIndex.value)
-  console.log(currentProducts.value)
   
 
   onMounted(() => {
@@ -68,5 +67,9 @@
 </script>
 
 <style scoped>
-
+.container{
+  text-align: center;
+  margin: auto;
+}
+  
 </style>

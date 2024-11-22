@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useProductStore } from './product'
 
 export const useCounterStore = defineStore('counter', () => {
   const articles = ref([])
@@ -97,6 +98,7 @@ export const useCounterStore = defineStore('counter', () => {
       })
   }
 
+  const productStore = useProductStore()
   // 로그인 요청 액션
   const logIn = function (payload) {
     // const username = payload.username
@@ -114,12 +116,16 @@ export const useCounterStore = defineStore('counter', () => {
         token.value = res.data.key
         user.value = username
         router.push({ name: 'MainView' })
-        // console.log(res.data)
         // console.log('로그인 성공')
+      })
+      .then((res) => {
+        getUser()
       })
       .catch((err) => {
         console.log(err)
       })
+
+      
   }
   
   // [추가기능] 로그아웃
@@ -131,6 +137,7 @@ export const useCounterStore = defineStore('counter', () => {
       .then((res) => {
         // console.log(res.data)
         token.value = null
+        userData.value = []
         router.push({ name: 'MainView' })
       })
       .catch((err) => {

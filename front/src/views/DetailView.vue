@@ -8,7 +8,7 @@
       <p>내용 : {{ article.content }}</p>
       <p>작성일시 : {{ formatDate(article.created_at) }}</p>
       <p>마지막 수정일시 : {{ formatDate(article.updated_at) }}</p>
-      <button @click="router.push({name: 'ArticleUpdateView', params:{id: article.id}})">글 수정</button>
+      <button v-if="store.user === article.user.username" @click="router.push({name: 'ArticleUpdateView', params:{id: article.id}})">글 수정</button>
       <button v-if="store.user === article.user.username" @click="deleteArticle">글 삭제</button>
       
       <hr>

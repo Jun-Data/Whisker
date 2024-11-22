@@ -1,12 +1,17 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { ref, computed } from 'vue'
-
+import { useCounterStore } from './counter'
 export const useProductStore = defineStore('product', () => {
   const API_URL = 'http://127.0.0.1:8000'
 
+  const counterStore = useCounterStore()
   const products = ref([])
   const PRODUCTS = ref([])
+  const userProducts = computed(() => {
+    if (!counterStore.isLogin) return []
+    return counterStore.userData.products
+  })
 
   const productCount = computed(() => {
     return products.value.length
@@ -55,7 +60,7 @@ export const useProductStore = defineStore('product', () => {
   }
 
   return { 
-    API_URL,  products, productCount,
+    API_URL,  products, productCount, PRODUCTS, userProducts,
     getProducts, filterProducts, sortProducts
    }
 }, {persist: true})

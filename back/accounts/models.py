@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from allauth.account.adapter import DefaultAccountAdapter
+from finlife.models import Product
 
 class User(AbstractUser):
     
@@ -30,7 +31,8 @@ class User(AbstractUser):
     patience = models.IntegerField(null=True, blank=True, default=0)
     # 금융 지식
     know = models.IntegerField(null=True, blank=True, default=0)
-
+    # 가입 상품
+    products = models.ManyToManyField(Product)
 
 
 
@@ -60,6 +62,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         saving = data.get("saving")
         patience = data.get("patience")
         know = data.get("know")
+        products = data.get("products")
 
 
         user_email(user, email)
@@ -89,6 +92,8 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             user_field(user, "patience", str(patience) )
         if know :
             user_field(user, "know", str(know) )
+        if products :
+            user_field(user, "products", products )
 
 
         if "password1" in data:

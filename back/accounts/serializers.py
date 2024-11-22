@@ -58,6 +58,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         required=False,
 
     )
+    
 
     # 해당 필드도 저장 시 함께 사용하도록 설정합니다.
     def get_cleaned_data(self):
@@ -78,6 +79,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             'saving' : self.validated_data.get('saving', ''),
             'patience' : self.validated_data.get('patience', ''),
             'know' : self.validated_data.get('know', ''),
+            # 'products' : self.validated_data.get('products', ''),
 
         }
 
@@ -117,6 +119,8 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             extra_fields.append('patience')
         if hasattr(UserModel, 'know'):
             extra_fields.append('know')
+        if hasattr(UserModel, 'products'):
+            extra_fields.append('products')
 
 
         model = UserModel
@@ -127,3 +131,10 @@ class CustomUserUpdateSerializer(UserDetailsSerializer):
     class Meta:
         model = UserModel
         fields = ('email', 'nickname', 'age', 'earn', 'family', 'location', 'risk', 'term', 'saving', 'patience', 'know')
+
+from finlife.serializers import ProductSerializer
+class AddProductSerializer(UserDetailsSerializer):
+    products = ProductSerializer(many=True)
+    class Meta:
+        model = UserModel
+        fields = ('products',)

@@ -13,6 +13,7 @@ import ProfileView from '@/views/ProfileView.vue'
 // import DepositDetailView from '@/views/ProductDetailView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 import ArticleUpdateView from '@/views/ArticleUpdateView.vue'
+import ProfileUpdateView from '@/views/ProfileUpdateView.vue'
 
 import Game from '@/components/Games/Game.vue'
 import Game_1 from '@/components/Games/Game_1.vue'
@@ -85,6 +86,11 @@ const router = createRouter({
       path: '/profile',
       name: 'ProfileView',
       component: ProfileView
+    },
+    {
+      path: '/profile/update',
+      name: 'ProfileUpdateView',
+      component: ProfileUpdateView
     },
     // {
     //   path: '/products/:type/:productId/:optionId',

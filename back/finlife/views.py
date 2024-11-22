@@ -47,8 +47,7 @@ def get_products(request):
     for url in (BASE_URL+"depositProductsSearch.json", BASE_URL+"savingProductsSearch.json"):
         datas = dict()
         response = requests.get(url, params=params).json()
-        print(len(response.get('result').get('baseList')))
-        print(len(response.get('result').get('optionList')))
+
         for prdt in response.get('result', {}).get('baseList', []):
             temp = {'type': prdt_type}
             for field in product_fields:
@@ -109,9 +108,9 @@ def exchange(request):
         'authkey': 'Ar4GiPppFvZOywPha5Vwi6gVPAGr5Q1T',
         'data': 'AP01',
     }
-    response = requests.get(url=url, params=params, verify=False).json()
+    response = requests.get(url=url, params=params).json()
     ex_fields = Exchange._meta.get_fields()
-    print(len(response))
+    
     for result in response:
         ex_check_datas = dict()
         for field in ex_fields:
@@ -120,7 +119,7 @@ def exchange(request):
         
         if Exchange.objects.filter(**ex_check_datas).exists():
             continue
-        print(result)
+        
         serializer = ExchangeSerializer(data=ex_check_datas)
         
         if serializer.is_valid(raise_exception=True):
