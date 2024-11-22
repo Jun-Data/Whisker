@@ -26,7 +26,7 @@
       </button>
 
       <!-- 다음 문제로 넘어가는 버튼 -->
-      <button @click="goToNextQuestion" :disabled="!selected" class="next-btn">
+      <button @click="goToNextQuestion" class="next-btn">
         다음 문제로 넘어가기
       </button>
     </div>
@@ -35,11 +35,15 @@
 </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted,inject } from 'vue';
   import { useRouter } from 'vue-router';
   
   const selected = ref(null); // 선택된 옵션을 추적
   const router = useRouter(); // 라우터 인스턴스 가져오기
+
+  // 부모에서 제공된 가중치 매핑과 선택된 값 가져오기
+  const weightMapping = inject('weightMapping'); // 부모에서 제공된 가중치 매핑
+  const weights = inject('weights'); // 부모에서 제공된 선택된 가중치 객체
 
      // 페이지가 로드될 때 로컬 스토리지에서 선택된 값을 불러오기
      onMounted(() => {
@@ -52,6 +56,12 @@
   // 선택된 옵션을 설정하는 함수
   const selectOption = (option) => {
     selected.value = option; // 클릭한 옵션을 활성화
+    localStorage.setItem('selectedOption5', option); // 로컬 스토리지에 저장
+  
+  // 가중치 반영
+  if (option) {
+  weights.value.saving = weightMapping.saving[option]; // 'earn'에 해당하는 가중치 저장
+}
   }
   
   // 이전 문제로 돌아가는 함수

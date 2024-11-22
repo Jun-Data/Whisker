@@ -4,7 +4,7 @@
       <h1>나는 여행을 좋아해 지금 당장 여행을 떠나고 싶어!</h1>
   
       <div class="options">
-        <!-- 소득 수준 -->
+        <!-- 상 : 소득 수준 -->
         <div
           class="option"
           :class="{ active: selected === 1 }"
@@ -12,7 +12,8 @@
         >
           <p>"내가 가진 자산으로 고양이를 위한 럭셔리 여행 준비 완료!"</p>
         </div>
-  
+          <!-- 하 : 소득 수준 -->
+
         <div
           class="option"
           :class="{ active: selected === 2 }"
@@ -20,7 +21,8 @@
         >
           <p>"지금은 자금이 없지만 작은 저축으로라도 고양이와의 모험을 시작할 수 있어!"</p>
         </div>
-  
+          <!-- 중 : 소득 수준 -->
+
         <div
           class="option"
           :class="{ active: selected === 3 }"
@@ -32,7 +34,7 @@
   
       <!-- 다음 문제로 넘어가는 버튼 -->
       <div class="next-btn">
-        <button @click="goToNextQuestion" :disabled="!selected">
+        <button @click="goToNextQuestion">
           다음 문제로 넘어가기
         </button>
       </div>
@@ -40,12 +42,17 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, inject } from 'vue';
   import { useRouter } from 'vue-router';
   
   const selected = ref(null); // 선택된 옵션을 추적
   const router = useRouter(); // 라우터 인스턴스 가져오기
   
+  // 부모에서 제공된 가중치 매핑과 선택된 값 가져오기
+  const weightMapping = inject('weightMapping'); // 부모에서 제공된 가중치 매핑
+  const weights = inject('weights'); // 부모에서 제공된 선택된 가중치 객체
+
+
   // 페이지가 로드될 때 로컬 스토리지에서 선택된 값을 불러오기
   onMounted(() => {
     const storedSelection = localStorage.getItem('selectedOption1');
@@ -58,8 +65,14 @@
   const selectOption = (option) => {
     selected.value = option; // 클릭한 옵션을 활성화
     localStorage.setItem('selectedOption1', option); // 로컬 스토리지에 저장
-  }
   
+    // 가중치 반영
+    if (option) {
+    weights.value.earn = weightMapping.earn[option]; // 'earn'에 해당하는 가중치 저장
+  }
+};
+
+
   // 2번 문제로 넘어가는 함수
   const goToNextQuestion = () => {
     if (selected.value) {

@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>나에게 간택당하고 싶다면 7개의 문항에 대답해</h1>
+        {{ weights }}
         <nav>
         <!-- 버튼을 눌러 다른 게임 페이지로 이동 -->
         <RouterLink :to="{ name: 'Game_1' }" class="button" :class="{ active: $route.name === 'Game_1' }">1번</RouterLink>
@@ -18,10 +19,61 @@
             <component :is="Component" />
         </Transition>
         </router-view>
+
+        <RouterLink v-if="isAllSelected" :to="{ name: 'EndGameView' }" class="button" >결과 보기</RouterLink>
     </div>
 </template>
 
 <script setup>
+import {ref, provide, computed} from 'vue'
+import { useRouter } from 'vue-router/dist/vue-router';
+import { onBeforeRouteLeave } from 'vue-router/dist/vue-router';
+
+const router = useRouter()
+router.push({name:'Game_1'})
+
+const isAllSelected = computed(() => {
+  return Object.values(weights.value).every((value)=>value!==null)
+})
+
+
+// 가중치 매핑 (각 게임 문제에 대한 선택지별 가중치)
+const weightMapping = {
+  earn: { 1: 10, 2: 1, 3: 5 },
+  family: { 1: 10, 2: 5, 3: 1 },
+  risk: { 1: 1, 2: 5, 3: 10 },
+  term: { 1: 10, 2: 1, 3: 5 },
+  saving: { 1: 10, 2: 1, 3: 5 },
+  patience: { 1: 10, 2: 1, 3: 5 },
+  know: { 1: 5, 2: 1, 3: 10},
+};
+
+// 각 게임 문제의 가중치를 관리할 reactive 객체
+const weights = ref({
+  earn: null,
+  family: null,
+  risk: null,
+  term: null,
+  saving: null,
+  patience: null,
+  know: null,
+});
+
+// 하위 컴포넌트에 weightMapping과 weights를 제공
+provide('weightMapping', weightMapping);
+provide('weights', weights);
+
+// 페이지를 벗어날 때 초기화 작업을 하도록 설정
+onBeforeRouteLeave((to, from, next) => {
+  // 게임 페이지를 벗어날 때만 선택값과 로컬스토리지를 초기화, 단 결과 페이지로는 초기화 하지 않음
+  if (to.name !== 'Game' && to.name !== 'EndGameView') {
+    for (let i=1; i<=7; i++) {
+      localStorage.removeItem(`selectedOption${i}`);  
+    }
+  }
+  next();
+});
+
 </script>
 
 <style scoped>

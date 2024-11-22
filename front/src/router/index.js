@@ -13,8 +13,6 @@ import ProfileView from '@/views/ProfileView.vue'
 // import DepositDetailView from '@/views/ProductDetailView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 import ArticleUpdateView from '@/views/ArticleUpdateView.vue'
-import ProfileUpdateView from '@/views/ProfileUpdateView.vue'
-
 import Game from '@/components/Games/Game.vue'
 import Game_1 from '@/components/Games/Game_1.vue'
 import Game_2 from '@/components/Games/Game_2.vue'
@@ -23,9 +21,7 @@ import Game_4 from '@/components/Games/Game_4.vue'
 import Game_5 from '@/components/Games/Game_5.vue'
 import Game_6 from '@/components/Games/Game_6.vue'
 import Game_7 from '@/components/Games/Game_7.vue'
-
-
-
+import EndGameView from '@/views/EndGameView.vue'
 
 import { useCounterStore } from '@/stores/counter'
 
@@ -87,11 +83,6 @@ const router = createRouter({
       name: 'ProfileView',
       component: ProfileView
     },
-    {
-      path: '/profile/update',
-      name: 'ProfileUpdateView',
-      component: ProfileUpdateView
-    },
     // {
     //   path: '/products/:type/:productId/:optionId',
     //   name: 'DepositDetailView',
@@ -107,7 +98,6 @@ const router = createRouter({
       name: 'ProductDetailView',
       component: ProductDetailView
     },
-
     {
       path: '/game',
       name: 'Game',
@@ -150,7 +140,11 @@ const router = createRouter({
         },
       ]
     },
-
+    {
+      path: '/endgame',
+      name: 'EndGameView',
+      component: EndGameView
+    },
   ],
 })
 

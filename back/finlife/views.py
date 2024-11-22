@@ -10,6 +10,45 @@ from django.conf import settings
 from pprint import pprint
 BASE_URL = "http://finlife.fss.or.kr/finlifeapi/"
 
+
+# import openai
+# from django.conf import settings
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from openai.error import OpenAIError
+
+# # OpenAI API 키 설정
+# openai.api_key = settings.OPENAI_API_KEY
+
+# class Chatbot(APIView):
+#     def post(self, request):
+#         question = request.data.get('question')
+#         if not question:
+#             return Response({"error": "No question provided"}, status=400)
+
+#         try:
+#             response = openai.ChatCompletion.create(
+#                 model="gpt-3.5-turbo",
+#                 messages=[
+#                     {"role": "user", "content": question}
+#                 ],
+#                 max_tokens=100
+#             )
+#             answer = response['choices'][0]['message']['content'].strip()
+#             return Response({"answer": answer})
+
+#         except InvalidRequestError as e:
+#             return Response({"error": f"Invalid request: {str(e)}"}, status=400)
+#         except AuthenticationError as e:
+#             return Response({"error": f"Authentication failed: {str(e)}"}, status=401)
+#         except RateLimitError as e:
+#             return Response({"error": f"Rate limit exceeded: {str(e)}"}, status=429)
+#         except APIConnectionError as e:
+#             return Response({"error": f"API connection error: {str(e)}"}, status=500)
+#         except Exception as e:
+#             return Response({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
+
 @api_view(['GET'])
 def get_products(request):
     API_KEY = '7649ed91ac98faab9730f3852543417b'

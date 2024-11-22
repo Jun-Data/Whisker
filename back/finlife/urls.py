@@ -8,5 +8,7 @@ urlpatterns = [
     # path('deposit/<int:deposit_id>/<int:option_id>/', views.deposit_detail),
     # path('savings/', views.get_savings),
     # path('saving/<int:saving_id>/<int:option_id>/', views.saving_detail),
-    path('exchange/', views.exchange)
+    path('exchange/', views.exchange),
+    # path('chatbot/', Chatbot.as_view()),
+
 ]
