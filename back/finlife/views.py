@@ -2,128 +2,105 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from .serializers import *
 import requests
+import certifi
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
 from django.conf import settings
-
+from pprint import pprint
 BASE_URL = "http://finlife.fss.or.kr/finlifeapi/"
 
-# 예금 API
 @api_view(['GET'])
-def get_deposits(request):
-    url = BASE_URL + "depositProductsSearch.json"
+def get_products(request):
     API_KEY = '7649ed91ac98faab9730f3852543417b'
     params = {
         'auth': API_KEY,
         'topFinGrpNo': '020000',
         'pageNo': 1,
     }
-
-    response = requests.get(url, params=params).json()
-    # models 필드명 리스트 저장
-    prdt_fields = DepositProducts._meta.get_fields()
-    opt_fields = DepositOptions._meta.get_fields()
-    # response 순회
-    for prdt in response.get('result').get('baseList'):
-        prdt_check_datas = dict()
-        # 최고한도 null인 경우 -1 처리
-        for field in prdt_fields:
-            if field.name == 'max_limit' and prdt.get(field.name) is None:
-                prdt_check_datas[field.name] = -1
-            if prdt.get(field.name):
-                prdt_check_datas[field.name] = prdt.get(field.name)
-
-        # 이미 있으면 저장하지 않음
-        # 주의: 값이 하나라도 바뀌면 추가됨
-        if DepositProducts.objects.filter(**prdt_check_datas).exists():
-            continue
-        
-        # 직렬화 후 저장
-        serializer = DepositProductsSerializer(data=prdt_check_datas)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-
-    for opt in response.get('result').get('optionList'):
-        opt_check_datas = dict()
-        # 금리가 null인 경우 -1 처리
-        for field in opt_fields:
-            if field.name == 'intr_rate' and opt.get(field.name) is None:
-                opt_check_datas[field.name] = -1
-                
-            if opt.get(field.name, False):
-                opt_check_datas[field.name] = opt.get(field.name)
-
-        if DepositOptions.objects.filter(**opt_check_datas).exists():
-            continue
-        # fin_prdt_cd가 같은 상품 찾아서 외래키 등록
-        product = DepositProducts.objects.get(fin_prdt_cd=opt.get('fin_prdt_cd'))
-        # 직렬화 후 저장
-        serializer = DepositOptionsSerializer(data=opt_check_datas)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(product=product)
-    # 개별 상품의 옵션을 모두 가지도록 직렬화(CompleteSerializer)
-    products = DepositProducts.objects.prefetch_related('options')
-    serializer = DepositCompleteSerializer(products, many=True)
-    return Response(serializer.data)
-
-# 적금 API
-@api_view(['GET'])
-def get_savings(request):
-    url = BASE_URL + "savingProductsSearch.json"
-    API_KEY = '7649ed91ac98faab9730f3852543417b'
-    params = {
-        'auth': API_KEY,
-        'topFinGrpNo': '020000',
-        'pageNo': 1,
-    }
-
-    response = requests.get(url, params=params).json()
+    product_fields = [
+    "fin_co_no",
+    "kor_co_nm",
+    "fin_prdt_nm",
+    "etc_note",
+    "join_deny",
+    "join_member",
+    "join_way",
+    "max_limit",
+    "spcl_cnd",
+    "intr_rate_type_nm",
+    "rsrv_type_nm",
+    "save_trm",
+    "intr_rate",
+    "intr_rate2",
+    ]
+    opt_fields = [
+        "intr_rate_type_nm",
+        "rsrv_type_nm",
+        "save_trm",
+        "intr_rate",
+        "intr_rate2",
+        "fin_prdt_cd"
+    ]
     
-    prdt_fields = SavingProducts._meta.get_fields()
-    opt_fields = SavingOptions._meta.get_fields()
-
-    for prdt in response.get('result').get('baseList'):
-        prdt_check_datas = dict()
+    prdt_type = 'deposit'
+    for url in (BASE_URL+"depositProductsSearch.json", BASE_URL+"savingProductsSearch.json"):
+        datas = dict()
+        response = requests.get(url, params=params).json()
+        print(len(response.get('result').get('baseList')))
+        print(len(response.get('result').get('optionList')))
+        for prdt in response.get('result', {}).get('baseList', []):
+            temp = {'type': prdt_type}
+            for field in product_fields:
+                if prdt.get(field) is None:
+                    temp[field] = -1
+                else:
+                    temp[field] = prdt.get(field, -1)
+            datas[prdt.get('fin_prdt_cd')] = temp
         
-        for field in prdt_fields:
-            if field.name == 'max_limit' and prdt.get(field.name) is None:
-                prdt_check_datas[field.name] = -1
-            if prdt.get(field.name):
-                prdt_check_datas[field.name] = prdt.get(field.name)
-
-
-        if SavingProducts.objects.filter(**prdt_check_datas).exists():
-            continue
-        
-
-        serializer = SavingProductsSerializer(data=prdt_check_datas)
-
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-
-    for opt in response.get('result').get('optionList'):
-        opt_check_datas = dict()
-        
-        for field in opt_fields:
-            if field.name == 'intr_rate' and opt.get(field.name) is None:
-                opt_check_datas[field.name] = -1
+        for opt in response.get('result', {}).get('optionList', []):
+            temp2 = dict()
+            for field in opt_fields:
+                if opt.get(field) is None:
+                    temp2[field] = -1
+                else:
+                    temp2[field] = opt.get(field, -1)
+            # pprint(temp)
+            complete_datas = {
                 
-            if opt.get(field.name, False):
-                opt_check_datas[field.name] = opt.get(field.name)
-
-        if SavingOptions.objects.filter(**opt_check_datas).exists():
-            continue
-        
-        product = SavingProducts.objects.get(fin_prdt_cd=opt.get('fin_prdt_cd'))
-        serializer = SavingOptionsSerializer(data=opt_check_datas)
-
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(product=product)
-
-    products = SavingProducts.objects.prefetch_related('options')
-    serializer = SavingCompleteSerializer(products, many=True)
+                **datas[opt['fin_prdt_cd']],
+                **temp2
+            }
+            # pprint(complete_datas)
+            
+            if Product.objects.filter(
+                fin_prdt_cd=temp2['fin_prdt_cd'],
+                intr_rate=temp2['intr_rate'],
+                intr_rate2=temp2[f'intr_rate2'],
+                ).exists():
+                continue
+            
+            if opt['fin_prdt_cd'] == '10-01-20-388-0002':
+                pprint(complete_datas)
+                
+            serializer = ProductSerializer(data=complete_datas)
+            if serializer.is_valid():
+                serializer.save()
+    
+        prdt_type = 'saving'
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
+
+
+
 
 @api_view(['GET'])
 def exchange(request):
@@ -133,6 +110,23 @@ def exchange(request):
         'data': 'AP01',
     }
     response = requests.get(url=url, params=params, verify=False).json()
-    
-    return JsonResponse(response[0])
+    ex_fields = Exchange._meta.get_fields()
+    print(len(response))
+    for result in response:
+        ex_check_datas = dict()
+        for field in ex_fields:
+            if result.get(field.name, False):
+                ex_check_datas[field.name] = result.get(field.name).replace(',', '')
+        
+        if Exchange.objects.filter(**ex_check_datas).exists():
+            continue
+        print(result)
+        serializer = ExchangeSerializer(data=ex_check_datas)
+        
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+
+    exchanges = Exchange.objects.all()
+    serializer = ExchangeSerializer(exchanges, many=True)
+    return Response(serializer.data)
 
