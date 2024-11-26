@@ -9,7 +9,7 @@
       <!-- 프로필 정보 -->
       <div class="profile-content">
         <p><span>Username:</span> <span>{{ store.userData.username }}</span></p>
-        <p><span>Email:</span> <span>{{ store.userData.email }}</span></p>
+        <!-- <p><span>Email:</span> <span>{{ store.userData.email }}</span></p> -->
         <p><span>Nickname:</span> <span>{{ store.userData.nickname }}</span></p>
         <p><span>First Name:</span> <span>{{ store.userData.first_name }}</span></p>
         <p><span>Last Name:</span> <span>{{ store.userData.last_name }}</span></p>
