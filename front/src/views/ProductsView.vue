@@ -65,7 +65,7 @@ onMounted(() => {
 <style scoped>
 /* 전체 컨테이너 스타일 */
 .product-container {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
   text-align: center;

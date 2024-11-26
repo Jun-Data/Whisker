@@ -14,6 +14,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faBars, faUser, faRightFromBracket, faPen, faPaw, faExclamation, faUpDown, faEyeSlash, faEye, faMagnifyingGlass, faCat, faCircleRight, faCircleLeft, faGamepad, faGifts, faAnglesLeft, faAnglesRight} from '@fortawesome/free-solid-svg-icons'
 library.add(faBars,faUser,faRightFromBracket, faPen, faPaw, faExclamation, faUpDown, faEyeSlash, faEye,faMagnifyingGlass, faCat, faCircleRight, faCircleLeft, faGamepad, faGifts,faAnglesLeft, faAnglesRight)
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // JavaScript 기능이 필요한 경우
+
 const app = createApp(App)
 const pinia = createPinia()
 
