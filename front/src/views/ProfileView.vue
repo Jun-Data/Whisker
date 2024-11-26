@@ -1,6 +1,6 @@
 <template>
   <div class="profile-container">
-    <h1>{{ store.user }} 님의 프로필 페이지</h1>
+    <h1>{{ store.userData.username }} 님의 프로필 페이지</h1>
     
     <div class="profile-details">
       <!-- 프로필 이미지 -->

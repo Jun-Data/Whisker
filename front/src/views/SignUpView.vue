@@ -128,13 +128,27 @@ const signUp = function () {
     }
   })
   .then(res => {
-    const key = res.data.key
-    store.token = key
-    store.getUser()
-    store.user = store.userData.username
-    router.push({name: 'MainView'})
+    // login
+    axios({
+      method: 'post',
+      url: `${store.API_URL}/accounts/login/`,
+      data: {
+        username: username.value,
+        password: password1.value,
+      }
+    })
+    .then(res => {
+      store.token = res.data.key
+      store.getUser()
+      store.user = store.userData.username
+      router.push({name: 'MainView'})
+    })
+    .catch(err => {
+      console.log(err)
+    })
   })
   .catch(err => {
+    console.log(err)
     const { non_field_errors, username, first_name, last_name, password1, password2 } = err.response.data
     usernameErr.value = username ? username[0] : null
     firstNameErr.value = first_name ? first_name[0] : null
