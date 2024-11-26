@@ -26,14 +26,14 @@
           <RouterLink
             v-if="!store.isLogin"
             to="/login"
-            class="text-decoration-none d-flex align-items-center gap-2">
+            class="text-decoration-none d-flex align-items-center gap-2 ms-2">
             <font-awesome-icon icon="fa-solid fa-sign-in-alt" class="fs-5" />
             로그인
           </RouterLink>
           <RouterLink
             v-if="!store.isLogin"
             to="/signup"
-            class="text-decoration-none d-flex align-items-center gap-2">
+            class="text-decoration-none d-flex align-items-center gap-2 ms-1">
             <font-awesome-icon icon="fa-solid fa-user-plus" class="fs-5" />
             회원가입
           </RouterLink>
@@ -41,13 +41,15 @@
             v-else
             to="/profile"
             class="text-decoration-none d-flex align-items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-user" class="fs-5 text-primary user-icon" />
+            <font-awesome-icon icon="fa-solid fa-user" class="fs-3 user-icon" />
           </RouterLink>
-          <font-awesome-icon
+          <button 
             v-if="store.isLogin"
-            icon="fa-solid fa-right-from-bracket"
-            @click="openModal"
-            class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2"/>
+            class="btn btn-outline-danger btn-sm d-flex align-items-center"
+            @click="openModal">
+            <font-awesome-icon icon="fa-solid fa-right-from-bracket" />
+            로그아웃
+          </button>
         </div>
       </div>
     </div>
@@ -67,11 +69,10 @@
   </main>
 </template>
 
-
 <script setup>
-import { RouterView, RouterLink } from 'vue-router';
+import { RouterView, RouterLink, useRoute } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Modal from './components/Modal.vue';
 import logo from '@/assets/whiskerlogo.png';
 
@@ -79,12 +80,6 @@ const store = useCounterStore();
 const isModalOpened = ref(false);
 const modalClass = ref('fade-in');
 const selectedNav = ref(null);
-
-// 아이콘 클릭 상태를 추적하는 변수 (login, signup 상태별로 관리)
-const isClicked = ref({
-  login: false,
-  signup: false
-});
 
 const navItems = [
   { label: 'Home', route: 'MainView', icon: 'fa-solid fa-home' },
@@ -107,90 +102,85 @@ const closeModal = () => {
 
 const logOut = () => {
   store.logOut();
-  if (isModalOpened) closeModal();
+  closeModal();
 };
 
 const handleNavClick = (navName) => {
   selectedNav.value = navName;
 };
 
-// 아이콘 클릭 시 색상 변경 함수
-const toggleIconColor = (type) => {
-  isClicked.value[type] = !isClicked.value[type]; // 클릭 시 색상 상태 토글
-};
+// Vue Router의 route 변경을 감지하여 selectedNav 값을 업데이트
+const route = useRoute();
+watch(route, (newRoute) => {
+  const matchingNavItem = navItems.find(nav => nav.route === newRoute.name);
+  selectedNav.value = matchingNavItem ? matchingNavItem.route : null;
+});
+
+// 초기 네비게이션 상태를 설정
+selectedNav.value = route.name;
+
 </script>
 
 <style scoped>
-/* 로그인/회원가입 버튼 아이콘 클릭 시 색상 변경 */
-.icon-clicked {
-  color: #6751b1; /* 클릭 시 색상 변경 */
-}
 
-/* 나머지 스타일들 */
 .header .container {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.header img {
-  margin-left: 0px;
-}
-
 .header .nav-link {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
-  transition: all 0.3s ease;
+  color: #6751b1;
+  transition: color 0.2s ease;
   position: relative;
 }
 
-.header .nav-link.active {
-  color: #0d6efd;
-}
-
 .header .nav-link:hover {
-  color: #0056b3;
+  color: #4a3b91; /* 텍스트 색상이 약간 어두워짐 */
 }
 
-.header .nav-link:hover::after {
+.header .nav-link::after {
   content: '';
   position: absolute;
   bottom: -3px;
   left: 0;
-  width: 100%;
+  width: 0;
   height: 2px;
-  background-color: #0056b3;
+  background-color: #6751b1;
   transition: width 0.3s ease;
 }
 
-.btn-primary:hover {
-  background-color: #004085;
-  border-color: #003766;
-}
-
-.btn-outline-primary:hover {
-  background-color: #e9ecef;
-  color: #004085;
+.header .nav-link:hover::after {
+  width: 100%;
 }
 
 /* 로그인/회원가입 버튼 */
 .header .d-flex.align-items-center a {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   text-decoration: none;
   color: #333;
+  will-change: transform;
   transition: all 0.3s ease;
 }
 
+.header .d-flex.align-items-center a:hover {
+  transform: scale(1.1);
+  color : #4a3b91;
+}
+
 .user-icon:hover {
-  color: #004085;
+  color: #6751b1;
 }
 
 .modal-message {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  margin-top: 20px;
 }
 
 .modal-buttons button {
@@ -198,7 +188,7 @@ const toggleIconColor = (type) => {
 }
 
 .modal-buttons .btn-danger:hover {
-  background-color: #b52a2a;
+  background-color: #9c1818;
 }
 
 .modal-buttons .btn-secondary:hover {
@@ -206,10 +196,9 @@ const toggleIconColor = (type) => {
 }
 
 .nav-gap {
-  gap: 30px;
+  gap: 40px;
 }
 
-.header .d-flex.ms-auto {
-  margin-left: auto;
-}
+
+
 </style>

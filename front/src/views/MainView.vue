@@ -52,7 +52,7 @@ import gsap from 'gsap';
 
 // core version + navigation, pagination modules:
 import Swiper from 'swiper';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules';
 // import Swiper and modules styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -60,30 +60,42 @@ import 'swiper/css/pagination';
 
 onMounted(() => {
   const swiper = new Swiper('.swiper', {
-    modules: [Navigation, Pagination],
+    modules: [Navigation, Pagination, EffectCoverflow], // EffectCoverflow 모듈 추가
     direction: 'horizontal',
-    effect: 'cube',
-    cubeEffect: {
-      slideShadows: false,
+    effect: 'coverflow', // coverflow 효과 설정
+    coverflowEffect: {
+      rotate: 50, // 슬라이드 회전 각도 설정 (기본 50도)
+      stretch: 10, // 슬라이드 간 간격 설정 (슬라이드가 겹치지 않게)
+      depth: 200, // 슬라이드가 겹치는 정도
+      modifier: 1, // 회전 효과 강도
+      slideShadows: true, // 그림자 효과 활성화
     },
-    loop: true,
+    speed: 800, // 전환 속도 설정 (기본값은 300ms)
+    loop: true, // 루프 설정
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
-    pagination: {
-      el: '.swiper-pagination', // 페이지네이션 설정
-      type: 'bullets',
-    },
+    spaceBetween: 50, // 슬라이드 간 간격을 넓게 설정
+    slidesPerView: 'auto', // 여러 슬라이드를 동시에 보이게 설정
+    centeredSlides: true, // 슬라이드가 중앙에 위치하도록 설정
+    grabCursor: true, // 커서가 손 모양으로 변경되어 슬라이드를 쉽게 드래그할 수 있도록
   });
 
-  gsap.fromTo('.headline-1', 
-    { opacity: 0, y: 50 }, 
+  // GSAP 애니메이션
+  gsap.fromTo(
+    '.headline-1',
+    { opacity: 0, y: 50 },
     { opacity: 1, y: 0, duration: 0.5, delay: 0.01 }
   );
 
-  gsap.fromTo('.headline-2', 
-    { opacity: 0, x: 50 }, 
+  gsap.fromTo(
+    '.headline-2',
+    { opacity: 0, x: 50 },
     { opacity: 1, x: 0, duration: 0.8, delay: 0.7 }
   );
 });
@@ -186,7 +198,7 @@ onMounted(() => {
 
 .card button {
   padding: 10px 15px;
-  background-color: rgb(22, 34, 104);
+  background-color: #2c2e88;
   color: white;
   border: none;
   border-radius: 5px;
@@ -196,6 +208,6 @@ onMounted(() => {
 }
 
 .card button:hover {
-  background-color: #64b5f6;
+  background-color: #585bd6;
 }
 </style>

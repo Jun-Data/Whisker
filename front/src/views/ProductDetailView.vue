@@ -23,11 +23,13 @@
         <p><strong>가입 기간:</strong> {{ product.save_trm }}개월</p>
       </div>
 
+      <!-- 관심상품 추가/삭제 버튼 -->
       <div class="product-actions">
         <button v-if="counterStore.isLogin && !isInUserProducts" @click="addUserProduct(product)" class="action-btn add-btn">관심상품 추가</button>
         <button v-if="counterStore.isLogin && isInUserProducts" @click="removeUserProduct(product)" class="action-btn remove-btn">관심목록에서 삭제</button>
       </div>
       
+      <!-- 뒤로가기 버튼 -->
       <div class="back-button">
         <button @click="router.go(-1)">뒤로가기</button>
       </div>
@@ -96,37 +98,43 @@
 <style scoped>
 .product-detail {
   padding: 20px;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .product-title {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 20px;
   color: #333;
+  font-weight: bold;
 }
 
 .product-info {
   background-color: #f9f9f9;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .product-details p {
   font-size: 1.1rem;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  line-height: 1.6;
 }
 
 .product-details strong {
   color: #333;
+  font-weight: bold;
 }
 
 .divider {
   margin: 20px 0;
   border: 0;
-  border-top: 1px solid #ccc;
+  border-top: 2px solid #e0e0e0;
 }
 
 .product-actions {
@@ -135,35 +143,14 @@
   margin-top: 30px;
 }
 
-.back-button {
-  display: flex;
-  justify-content: flex-end; /* 뒤로가기 버튼을 오른쪽 정렬 */
-  margin-top: 20px; /* 위와의 간격 조절 */
-}
-
-.back-button button {
-  padding: 5px 10px;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: none;
-  background-color: #ccc;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.back-button button:hover {
-  background-color: #bbb;
-}
-
 .action-btn {
-  padding: 11px 5px;
+  padding: 12px 25px;
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
   border: none;
   transition: all 0.3s ease;
-  width: 160px;
+  width: 180px;
   font-weight: bold;
 }
 
@@ -173,23 +160,44 @@
 }
 
 .add-btn:hover {
-  background-color: #588f31;
+  background-color: #6c9e4e;
 }
 
 .remove-btn {
-  background-color: #913d3d;
+  background-color: #f44336;
   color: white;
 }
 
 .remove-btn:hover {
-  background-color: #662828;
+  background-color: #d32f2f;
+}
+
+.back-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.back-button button {
+  padding: 10px 15px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #9e9e9e;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button button:hover {
+  background-color: #757575;
 }
 
 @media (max-width: 600px) {
   .product-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
-  
+
   .product-info {
     padding: 15px;
   }
@@ -201,6 +209,11 @@
   .action-btn {
     font-size: 1rem;
     padding: 10px 20px;
+  }
+
+  .back-button button {
+    padding: 8px 12px;
+    font-size: 1rem;
   }
 }
 </style>

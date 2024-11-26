@@ -1,6 +1,6 @@
 <template>
   <div class="product-container">
-    <h1 class="page-title">예적금 상품 조회</h1>
+    <h1 class="page-title fs-1">예적금 상품 조회</h1>
 
     <!-- 검색 입력창 -->
     <div class="search-container">

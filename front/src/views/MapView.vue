@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- 헤더 영역 -->
     <header class="header">
-      <h1>주변 은행 찾기</h1>
+      <h1 class="title fs-1">주변 은행 찾기</h1>
     </header>
 
     <!-- 지도 영역 -->
@@ -57,7 +57,7 @@ const bank = ref("");
 // 주변 은행 정보 리스트
 const banksList = ref([]);
 
-// 주소 기반으로 지도 이동 함수
+// 지도 이동 함수
 const moveMapToLocation = (address, isCitySelect = false) => {
   const geocoder = new kakao.maps.services.Geocoder();
   geocoder.addressSearch(address, (result, status) => {
@@ -67,12 +67,10 @@ const moveMapToLocation = (address, isCitySelect = false) => {
       const zoomLevel = isCitySelect ? 8 : 5;
       store.map.setLevel(zoomLevel); // 확대 레벨 설정
 
-      // 지도 이동 후 주변 은행 검색
-      setTimeout(() => {
-        store.searchBanks(bank.value, (places) => {
-          banksList.value = places; // 주변 은행 데이터 설정
-        });
-      }, 500);
+      // 주변 은행 검색
+      store.searchBanks(bank.value, (places) => {
+        banksList.value = places; // 주변 은행 데이터 설정
+      });
     } else {
       console.log("주소를 찾을 수 없습니다.");
     }
@@ -136,6 +134,15 @@ watch(
 
       store.searchBanks(bank.value, (places) => {
         banksList.value = places; // 마커 갱신 후 은행 리스트 갱신
+        places.forEach((place) => {
+          if (!place.marker) {
+            const marker = new kakao.maps.Marker({
+              position: new kakao.maps.LatLng(place.latitude, place.longitude),
+              map: mapStore.map,
+            });
+            place.marker = marker; // 장소에 마커 정보 저장
+          }
+        });
       });
     }
   }
@@ -147,6 +154,7 @@ watch(
   font-weight: 700; /* 글자 두께를 더 두껍게 */
   font-size: 2rem; /* 글자 크기 설정 */
 }
+
 /* 콘텐츠 wrapper 스타일 */
 .content-wrapper {
   padding: 20px;

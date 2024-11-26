@@ -11,8 +11,8 @@ useKakao('5c6ff48b64b92bb770446e41b1cc440f', ['clusterer','services','drawing'])
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { faBars, faUser, faRightFromBracket, faPen, faPaw, faExclamation, faUpDown, faEyeSlash, faEye, faMagnifyingGlass, faCat, faCircleRight, faCircleLeft, faGamepad, faGifts, faAnglesLeft, faAnglesRight, faHome, faComments, faPiggyBank, faMapMarkerAlt, faShoppingCart, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
-library.add(faBars,faUser,faRightFromBracket, faPen, faPaw, faExclamation, faUpDown, faEyeSlash, faEye,faMagnifyingGlass, faCat, faCircleRight, faCircleLeft, faGamepad, faGifts,faAnglesLeft, faAnglesRight, faHome, faComments, faPiggyBank, faMapMarkerAlt, faShoppingCart, faExchangeAlt)
+import { faBars, faUser, faRightFromBracket, faPen, faPaw, faExclamation, faUpDown, faEyeSlash, faEye, faMagnifyingGlass, faCat, faCircleRight, faCircleLeft, faGamepad, faGifts, faAnglesLeft, faAnglesRight, faHome, faComments, faPiggyBank, faMapMarkerAlt, faShoppingCart, faExchangeAlt,faSignInAlt,faUserPlus } from '@fortawesome/free-solid-svg-icons'
+library.add(faBars,faUser,faRightFromBracket, faPen, faPaw, faExclamation, faUpDown, faEyeSlash, faEye,faMagnifyingGlass, faCat, faCircleRight, faCircleLeft, faGamepad, faGifts,faAnglesLeft, faAnglesRight, faHome, faComments, faPiggyBank, faMapMarkerAlt, faShoppingCart, faExchangeAlt,faSignInAlt,faUserPlus)
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // JavaScript 기능이 필요한 경우

@@ -172,9 +172,6 @@ onBeforeRouteLeave((to, from, next) => {
   next();
 });
 
-
-
-
 </script>
 
 <style scoped>

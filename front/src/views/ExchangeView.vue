@@ -6,7 +6,7 @@
       
       <!-- 출발 통화 선택 -->
       <div class="form-group">
-        <label for="from-currency">출발 통화</label>
+        <label for="from-currency" class="title fs-5">출발 통화</label>
         <select v-model="fromCurrency" id="from-currency" class="dropdown">
           <option value="" disabled>출발 통화 선택</option>
           <option v-for="data in cleanedDatas" :key="data.id" :value="data.cur_unit">
@@ -22,7 +22,7 @@
       
       <!-- 도착 통화 선택 -->
       <div class="form-group">
-        <label for="to-currency">도착 통화</label>
+        <label for="to-currency" class="title fs-5">도착 통화</label>
         <select v-model="toCurrency" id="to-currency" class="dropdown">
           <option value="" disabled>도착 통화 선택</option>
           <option v-for="data in cleanedDatas" :key="data.id" :value="data.cur_unit">
@@ -33,7 +33,7 @@
 
       <!-- 금액 입력 -->
       <div class="form-group">
-        <label for="amount-input">환전하고자 하는 금액</label>
+        <label for="amount-input" class="title fs-5">환전하고자 하는 금액</label>
         <input 
           id="amount-input"
           type="text" 
@@ -45,7 +45,6 @@
         <span v-if="amount < 0" class="error-message">입력값을 확인하세요</span>
         <span v-if="fromCurrency" class="currency-unit">({{ getCurrencyName(fromCurrency) }})</span>
       </div>
-
 
       <!-- 제출 버튼 -->
       <div class="form-group">
@@ -62,6 +61,8 @@
       </div>
     </div>
   </div>
+
+  
 </template>
 
 <script setup>
@@ -146,20 +147,29 @@ const validateAmount = () => {
 };
 
 const submitAmount = () => {
-  if (amount.value <= 0) {
+  if (fromCurrency.value === toCurrency.value) {
+    // 출발 통화와 도착 통화가 같으면 경고 메시지
+    alert('출발 통화와 도착 통화는 다르게 선택해야 합니다.');
+  } else if (amount.value <= 0) {
+    // 금액이 0보다 작거나 같으면 경고 메시지
     alert('금액은 0보다 커야 합니다.');
   } else {
+    // 유효한 경우, 환전 결과를 제출
     isSubmitted.value = true;
   }
 };
 
 // 출발 통화와 도착 통화 바꾸는 함수
 const swapCurrencies = () => {
+  if (fromCurrency.value === toCurrency.value) {
+    alert('같은 나라입니다!');
+    return;  // 같은 나라일 경우 함수 종료
+  }
+
   const temp = fromCurrency.value;
   fromCurrency.value = toCurrency.value;
   toCurrency.value = temp;
 };
-
 
 const data = ref(null); // 데이터 변수
 // 데이터 로드 함수
@@ -178,86 +188,82 @@ const fetchData = async () => {
     }
   }
 };
-
-
 </script>
 
 <style scoped>
-/* 기존 스타일 유지 */
+/* 기본 컨테이너 스타일 */
 .exchange-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
-  background-color: #f9f9fb;
-  padding: 40px 20px;
+  min-height: 70vh;
+  background-color: #f7f8fc;
+  padding: 30px 15px;
 }
 
-/* 환율 카드 */
+/* 환율 카드 스타일 */
 .exchange-card {
-  background: white;
-  padding: 90px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 60px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   width: 100%;
   text-align: center;
 }
 
-/* 타이틀과 서브타이틀 */
+/* 타이틀 스타일 */
 .title {
-  font-size: 2.4rem;
-  font-weight: bold;
+  font-size: 2.6rem;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  color: #555;
+  color: #666;
   margin-bottom: 30px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-/* 통화 바꾸기 버튼 부모 요소 가운데 정렬 */
+/* 폼 그룹 스타일 */
 .form-group {
   display: flex;
-  flex-direction: column; /* 세로로 정렬 */
-  align-items: center; /* 가운데 정렬 */
-  margin-bottom: 17px; /* 기존 여백 유지 */
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-/* 도착 통화 선택창과 금액 입력창 사이 간격 넓히기 */
-.form-group:nth-child(6) {
-  margin-top: 70px; /* 도착 통화 선택창과 금액 입력창 사이 간격을 넓힘 */
-}
-
+/* 레이블 스타일 */
 label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 8px;
   text-align: left;
   width: 100%;
 }
 
-/* select와 input 필드에 동일한 스타일 적용 */
+/* 선택 및 입력 필드 스타일 */
 .dropdown, .input-field {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
-  box-sizing: border-box; /* padding과 border를 포함하여 너비 계산 */
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 /* 버튼 스타일 */
 .submit-button {
   width: 100%;
-  background-color: #585bd6;
+  background-color: #5c6bc0;
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 10px;
+  padding: 12px;
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
@@ -265,64 +271,43 @@ label {
 }
 
 .submit-button:hover {
-  background-color: #3134c7; /* hover 시 더 진한 색상 */
+  background-color: #3f51b5;
   transform: scale(1.05);
 }
 
-/* 통화 바꾸기 버튼 */
+/* 통화 바꾸기 버튼 스타일 */
 .swap-button {
-  width: 33px;
-  height: 33px; /* 버튼을 정사각형으로 설정 */
-  background-color: #8d8eb4;
+  width: 40px;
+  height: 40px;
+  background-color: #3f51b5;
   color: white;
   border: none;
   border-radius: 50%;
-  font-size: 1.17rem;
+  font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.04s ease, background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .swap-button:hover {
-  background-color: #585bd6;
+  background-color: #3f51b5;
 }
 
-/* 결과 스타일 */
+/* 결과 출력 스타일 */
 .result {
-  margin-top: 20px;
-  font-size: 16px;
+  margin-top: 30px;
+  font-size: 18px;
   font-weight: bold;
 }
 
-.error-message {
-  color: red;
-  font-size: 12px;
-}
-
-.currency-unit {
-  margin-left: 10px;
-  font-size: 14px;
-  color: #666;
-}
-
-/* 결과 스타일 */
-.result {
-  margin-top: 20px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-}
-
-/* 예상 환전 금액을 더 강조 */
 .conversion-amount {
   margin-top: 10px;
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 600;
-  color: #4caf50; /* 성공적인 환전 금액을 나타내는 초록색 */
-  background-color: #f0f9f4; /* 부드러운 배경 */
-  padding: 15px;
-  border-radius: 10px;
+  color: #4caf50;
+  background-color: #e8f5e9;
+  padding: 20px;
+  border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease-in-out;
@@ -332,13 +317,22 @@ label {
   transform: scale(1.05);
 }
 
-/* 추가 설명 텍스트 */
 .conversion-info {
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 14px;
   color: #777;
   font-style: italic;
   text-align: center;
 }
 
-</style>
+/* 에러 메시지 스타일 */
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+.currency-unit {
+  font-size: 14px;
+  color: #666;
+}
+</style> 

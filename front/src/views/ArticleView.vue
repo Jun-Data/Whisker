@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- 헤더 영역 -->
     <header class="header">
-      <h1>자유 게시판</h1>
+      <h1 class="title fs-1">자유 게시판</h1>
       <RouterLink :to="{ name: 'CreateView' }" class="btn-create">
         <font-awesome-icon icon="pen" /> 글 작성 
       </RouterLink>
