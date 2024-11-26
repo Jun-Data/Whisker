@@ -1,6 +1,6 @@
 <template>
   <header class="header bg-light shadow-sm py-3">
-    <div class="container d-flex align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
       <!-- 로고 (왼쪽 정렬) -->
       <img :src="logo" alt="Logo" width="145" height="100" class="ms-0">
 
@@ -20,28 +20,34 @@
         </ul>
       </nav>
 
-      <!-- 로그인/회원가입 섹션 (오른쪽 정렬) -->
-      <div class="ms-auto">
-        <div v-if="!store.isLogin" class="d-flex align-items-center gap-3">
+      <!-- 로그인/회원가입 또는 프로필/로그아웃 섹션 (오른쪽 정렬) -->
+      <div class="d-flex align-items-center gap-3 ms-0 justify-content-end">
+        <div class="d-flex align-items-center gap-3">
           <RouterLink
+            v-if="!store.isLogin"
             to="/login"
-            class="btn btn-outline-primary d-flex align-items-center gap-2">
+            class="text-decoration-none d-flex align-items-center gap-2">
             <font-awesome-icon icon="fa-solid fa-sign-in-alt" class="fs-5" />
             로그인
           </RouterLink>
           <RouterLink
+            v-if="!store.isLogin"
             to="/signup"
-            class="btn btn-primary d-flex align-items-center gap-2">
+            class="text-decoration-none d-flex align-items-center gap-2">
             <font-awesome-icon icon="fa-solid fa-user-plus" class="fs-5" />
             회원가입
           </RouterLink>
-        </div>
-        <div v-else class="d-flex align-items-center gap-3">
-          <RouterLink to="/profile" class="text-decoration-none d-flex align-items-center gap-2">
-            <font-awesome-icon icon="fa-solid fa-user" class="fs-4 text-primary user-icon" />
+          <RouterLink
+            v-else
+            to="/profile"
+            class="text-decoration-none d-flex align-items-center gap-2">
+            <font-awesome-icon icon="fa-solid fa-user" class="fs-5 text-primary user-icon" />
           </RouterLink>
-          <h4>|</h4>
-            <font-awesome-icon icon="fa-solid fa-right-from-bracket" @click="openModal" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2" />
+          <font-awesome-icon
+            v-if="store.isLogin"
+            icon="fa-solid fa-right-from-bracket"
+            @click="openModal"
+            class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2"/>
         </div>
       </div>
     </div>
@@ -62,45 +68,23 @@
 </template>
 
 
-
 <script setup>
 import { RouterView, RouterLink } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
 import { ref } from 'vue';
 import Modal from './components/Modal.vue';
 import logo from '@/assets/whiskerlogo.png';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faHome,
-  faComments,
-  faPiggyBank,
-  faMapMarkerAlt,
-  faShoppingCart,
-  faExchangeAlt,
-  faUser,
-  faSignInAlt,
-  faUserPlus,
-  faRightFromBracket,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-library.add(
-  faHome,
-  faComments,
-  faPiggyBank,
-  faMapMarkerAlt,
-  faShoppingCart,
-  faExchangeAlt,
-  faUser,
-  faSignInAlt,
-  faUserPlus,
-  faRightFromBracket
-);
 
 const store = useCounterStore();
 const isModalOpened = ref(false);
 const modalClass = ref('fade-in');
 const selectedNav = ref(null);
+
+// 아이콘 클릭 상태를 추적하는 변수 (login, signup 상태별로 관리)
+const isClicked = ref({
+  login: false,
+  signup: false
+});
 
 const navItems = [
   { label: 'Home', route: 'MainView', icon: 'fa-solid fa-home' },
@@ -129,31 +113,30 @@ const logOut = () => {
 const handleNavClick = (navName) => {
   selectedNav.value = navName;
 };
+
+// 아이콘 클릭 시 색상 변경 함수
+const toggleIconColor = (type) => {
+  isClicked.value[type] = !isClicked.value[type]; // 클릭 시 색상 상태 토글
+};
 </script>
 
-
 <style scoped>
-.header .nav-link {
-  font-size: 18px;
-  font-weight: bold;
+/* 로그인/회원가입 버튼 아이콘 클릭 시 색상 변경 */
+.icon-clicked {
+  color: #6751b1; /* 클릭 시 색상 변경 */
 }
 
-.header .nav-link.active {
-  color: #0d6efd; /* Bootstrap 기본 색상 */
+/* 나머지 스타일들 */
+.header .container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-/* 로고 위치 */
 .header img {
-  margin-left: 0; /* 왼쪽 여백을 제거하여 왼쪽 끝에 배치 */
+  margin-left: 0px;
 }
 
-.modal-message {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* 네비게이션 링크 스타일 */
 .header .nav-link {
   font-size: 18px;
   font-weight: bold;
@@ -162,28 +145,25 @@ const handleNavClick = (navName) => {
   position: relative;
 }
 
-/* 선택된 네비게이션 링크 색상 */
 .header .nav-link.active {
-  color: #0d6efd; /* Bootstrap 기본 색상 */
+  color: #0d6efd;
 }
 
-/* 네비게이션 호버 스타일 */
 .header .nav-link:hover {
-  color: #0056b3; /* 어두운 블루 톤 */
+  color: #0056b3;
 }
 
 .header .nav-link:hover::after {
   content: '';
   position: absolute;
-  bottom: -3px; /* 텍스트 아래쪽 */
+  bottom: -3px;
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #0056b3; /* 하이라이트 색상 */
+  background-color: #0056b3;
   transition: width 0.3s ease;
 }
 
-/* 로그인/회원가입 버튼 호버 */
 .btn-primary:hover {
   background-color: #004085;
   border-color: #003766;
@@ -194,25 +174,25 @@ const handleNavClick = (navName) => {
   color: #004085;
 }
 
-/* 로그아웃 버튼 스타일 */
-.log-out-btn:hover {
-  background-color: #dc3545;
-  color: white;
+/* 로그인/회원가입 버튼 */
+.header .d-flex.align-items-center a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s ease;
 }
 
-/* 사용자 아이콘 호버 스타일 */
 .user-icon:hover {
   color: #004085;
 }
 
-/* 모달 창 메시지 */
 .modal-message {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-/* 모달 버튼 스타일 */
 .modal-buttons button {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -225,25 +205,11 @@ const handleNavClick = (navName) => {
   background-color: #5a6268;
 }
 
-/* 네비게이션 요소 간 간격 조정 */
 .nav-gap {
-  gap: 30px; /* 네비게이션 항목 간 간격 설정 */
+  gap: 30px;
 }
 
-.nav-link {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  transition: all 0.3s ease;
+.header .d-flex.ms-auto {
+  margin-left: auto;
 }
-
-.nav-link.active {
-  color: #0d6efd;
-}
-
-.nav-link:hover {
-  color: #0056b3;
-}
-
-
 </style>

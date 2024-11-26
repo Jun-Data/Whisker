@@ -63,6 +63,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+h1 {
+  font-weight: 700; /* 글자 두께를 더 두껍게 */
+  font-size: 2rem; /* 글자 크기 설정 */
+}
+
 /* 전체 컨테이너 스타일 */
 .product-container {
   width: 100%;

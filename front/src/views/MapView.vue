@@ -143,6 +143,10 @@ watch(
 </script>
 
 <style scoped>
+.header h1 {
+  font-weight: 700; /* 글자 두께를 더 두껍게 */
+  font-size: 2rem; /* 글자 크기 설정 */
+}
 /* 콘텐츠 wrapper 스타일 */
 .content-wrapper {
   padding: 20px;
@@ -179,7 +183,7 @@ watch(
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  width: 80%;
+  width: 100%;
 }
 
 .custom-select {

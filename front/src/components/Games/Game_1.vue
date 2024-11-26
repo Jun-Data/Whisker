@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h3>3개의 선택지 중 하나를 선택해</h3>
+      <h6>3개의 선택지 중 하나를 선택해주세요</h6>
       <h1>나는 여행을 좋아해 지금 당장 여행을 떠나고 싶어!</h1>
   
       <div class="options">

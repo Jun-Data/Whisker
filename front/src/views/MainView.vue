@@ -32,7 +32,7 @@
   <!-- 카드 섹션 -->
   <div class="cards-section">
     <div class="card">
-      <h3>금융 상품에 대한 이야기를 공유해보세요!</h3>
+      <h3>금융상품에 대한 이야기를 공유해보세요!</h3>
       <RouterLink :to="{ name: 'ArticleView' }" ><button>더 알아보기</button></RouterLink>
     </div>
     <div class="card">
@@ -155,7 +155,7 @@ onMounted(() => {
   gap: 20px;
   margin-top: 60px; /* 카드 섹션과 슬라이더 사이에 충분한 여백 추가 */
   padding: 20px;
-  width: 80%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto; /* 카드 섹션 중앙 정렬 */
   position: relative;
@@ -170,6 +170,8 @@ onMounted(() => {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease;
+  justify-content: space-between; /* 글자와 버튼 간격 일정하게 조정 */
+  height: 100%;
 }
 
 .card:hover {
@@ -178,7 +180,8 @@ onMounted(() => {
 
 .card h3 {
   font-size: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .card button {
@@ -189,6 +192,7 @@ onMounted(() => {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: auto; /* 버튼을 카드 하단에 위치시킴 */
 }
 
 .card button:hover {

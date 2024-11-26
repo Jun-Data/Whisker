@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h3>3개의 선택지 중 하나를 선택해</h3>
+      <h6>3개의 선택지 중 하나를 선택해주세요</h6>
       <h1>나를 위해 얼마나 위험을 감수 할 수 있어?</h1>
   
       <div class="options">

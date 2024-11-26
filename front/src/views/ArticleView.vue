@@ -4,7 +4,7 @@
     <header class="header">
       <h1>자유 게시판</h1>
       <RouterLink :to="{ name: 'CreateView' }" class="btn-create">
-        <font-awesome-icon icon="pen" /> 글 작성
+        <font-awesome-icon icon="pen" /> 글 작성 
       </RouterLink>
     </header>
 
@@ -43,29 +43,33 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-/* 게시글 리스트 */
-.article-list {
-  margin-top: 20px;
-  overflow-x: auto; /* 테이블이 크기를 초과할 경우 가로 스크롤 추가 */
-  width: 100%; /* .article-list를 100% 너비로 설정 */
+/* 헤더 스타일 */
+.header {
+  display: flex;
+  justify-content: space-between; /* 제목과 버튼을 양쪽으로 배치 */
+  align-items: center; /* 수직 중앙 정렬 */
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
 
-/* 테이블 스타일 */
-table {
-  width: 100%; /* 테이블 너비를 wrapper에 맞춤 */
-  border-collapse: collapse; /* 테이블 경계선 간격 제거 */
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  table-layout: auto; /* 기본값으로 자동 너비 조정 */
-  max-width: 100%; /* 최대 너비를 100%로 설정 */
-  box-sizing: border-box; /* padding과 border가 크기에 포함되도록 설정 */
+/* 자유 게시판 제목 스타일 (더 두껍게) */
+.header h1 {
+  font-weight: 700; /* 글자 두께를 더 두껍게 */
+  font-size: 2rem; /* 글자 크기 설정 */
 }
 
+/* 글 작성 버튼 스타일 */
 .btn-create {
   color: black;  /* 텍스트 색상 검정으로 변경 */
-  text-decoration: none;  /* 밑줄 제거 */ 
-  margin-top: 45px;
+  text-decoration: none;  /* 밑줄 제거 */
+  font-size: 1rem; /* 폰트 크기 설정 */
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  gap: 5px;
+  font-size: large;
 }
+
 .btn-create:hover {
   color: #585bd6;
 }
