@@ -11,8 +11,8 @@
         </p>
         <br><br>
         <div>
-          <button v-if="store.user === article.user.username" @click="router.push({name: 'ArticleUpdateView', params:{id: article.id}})">수정</button>
-          <button v-if="store.user === article.user.username" @click="deleteArticle" style="margin-left: 5px;">삭제</button>
+          <button v-if="store.userData.username === article.user.username" @click="router.push({name: 'ArticleUpdateView', params:{id: article.id}})">수정</button>
+          <button v-if="store.userData.username === article.user.username" @click="deleteArticle" style="margin-left: 5px;">삭제</button>
         </div>
       </div>
       <hr>
@@ -55,7 +55,7 @@ const route = useRoute()
 const router = useRouter()
 const article = ref(null)
 const commentInput = ref('')
-
+console.log(store.userData)
 const createComment = () => {
   if (!store.isLogin) {
     alert('로그인이 필요합니다.')

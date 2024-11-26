@@ -53,7 +53,8 @@ export const useProductStore = defineStore('product', () => {
     products.value = Object.values(PRODUCTS.value).filter(e =>
         e.type.includes(keyword) ||
         e.kor_co_nm.includes(keyword) ||
-        e.fin_prdt_nm.includes(keyword))
+        e.fin_prdt_nm.includes(keyword) ||
+        e.intr_rate_type_nm.includes(keyword))
     }
   
 

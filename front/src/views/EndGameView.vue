@@ -5,7 +5,7 @@
     <h2 class="user-message"> <span style="font-size: xx-large; color: #6A669D;" >{{ userdata.userData.username }}</span> 님의 성향에 맞춘 금융 추천 상품 <font-awesome-icon :icon="['fas', 'gifts']" /></h2> 
 
     <div class="product-list-container">
-      <ProductListItem :product="store.recommededProduct" />
+      <RecommededProductItem :product="store.recommededProduct" />
     </div>
     <img :src="ttabong" alt="cattabong">
     <div class="restart-container">
@@ -20,7 +20,8 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useProductStore } from '@/stores/product';
-import ProductListItem from '@/components/ProductListItem.vue';
+// import ProductListItem from '@/components/ProductListItem.vue';
+import RecommededProductItem from '@/components/RecommededProductItem.vue';
 import { useCounterStore } from '@/stores/counter';
 import ttabong from '@/assets/ttabong.jpg';
 

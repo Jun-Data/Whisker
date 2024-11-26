@@ -29,10 +29,8 @@
       </div>
       
       <div class="back-button">
-      <RouterLink :to="{ name: 'ProductsView' }">
-        <button>뒤로가기</button>
-      </RouterLink>
-    </div>
+        <button @click="router.go(-1)">뒤로가기</button>
+      </div>
     </div>
   </div>
 </template>
@@ -42,10 +40,11 @@
   import { onMounted } from 'vue';
   import { useProductStore } from '@/stores/product';
   import { useCounterStore } from '@/stores/counter';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import axios from 'axios';
 
   const route = useRoute();
+  const router = useRouter();
   const store = useProductStore();
   const counterStore = useCounterStore();
   const product = ref(null);

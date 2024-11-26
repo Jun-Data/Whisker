@@ -24,7 +24,8 @@
 
     <div class="product-section">
       <h2>관심있는 상품</h2>
-      <div v-for="product in userProducts" :key="product.id" class="product-item">
+      <div v-for="product in userProducts" :key="product.id" class="product-item"
+      @click="router.push({name: 'ProductDetailView', params: {productId: product.id}})">
         <p>{{ product.fin_prdt_nm }}</p>
       </div>
 
@@ -184,6 +185,10 @@ button:hover {
   margin: 10px 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   text-align: center;
+}
+.product-item:hover {
+  cursor:pointer;
+  box-shadow: 0 6px 8px rgba(0.1, 0.1, 0.1, 0.1);
 }
 
 .product-item p {

@@ -6,7 +6,7 @@
     </div>
     <div>
       {{ comment.content }}
-      <button  v-if="store.user === comment.user.username" @click="deleteComment(route.params.id, comment.id)">삭제</button>
+      <button  v-if="store.userData.username === comment.user.username" @click="deleteComment(route.params.id, comment.id)">삭제</button>
     </div>
     <hr>
   </div>
