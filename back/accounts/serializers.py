@@ -17,6 +17,17 @@ class CustomRegisterSerializer(RegisterSerializer):
         required=False,
 
     )
+    email = serializers.EmailField(
+        required=False,
+    )
+    first_name = serializers.CharField(
+        required=False,
+        max_length=255
+    )
+    last_name = serializers.CharField(
+        required=False,
+        max_length=255
+    )
 
     earn = serializers.IntegerField(
         required=False,
@@ -66,6 +77,8 @@ class CustomRegisterSerializer(RegisterSerializer):
             'username': self.validated_data.get('username', ''),
             'email': self.validated_data.get('email', ''),
             'password1': self.validated_data.get('password1', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
             # nickname 필드 추가
             'nickname': self.validated_data.get('nickname', ''),
             'age': self.validated_data.get('age', ''),\
@@ -125,7 +138,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
         model = UserModel
         fields = ('pk', *extra_fields)
-        read_only_fields = ('email',)
+        read_only_fields = ('email', 'nickname', 'age')
 
 class CustomUserUpdateSerializer(UserDetailsSerializer):
     class Meta:

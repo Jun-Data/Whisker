@@ -1,24 +1,38 @@
 <template>
-  <div>
-    <h1>상품 상세 페이지</h1>
-    <div v-if="product">
-      <div>
-        <button v-if="counterStore.isLogin && !isInUserProducts" @click="addUserProduct(product)">담기</button>
-        <button v-if="counterStore.isLogin && isInUserProducts" @click="removeUserProduct(product)">삭제</button>
+  <div class="product-detail">
+    <h1 class="product-title">상품 상세 페이지</h1>
+
+    <div v-if="product" class="product-info">
+      
+      <!-- 상품 정보 -->
+      <div class="product-details">
+        <p><strong>상품 유형 : </strong> {{ product.type === 'deposit' ? '예금' : '적금' }}</p>
+        <p><strong>금융회사명 :</strong> {{ product.kor_co_nm }}</p>
+        <p><strong>상품명 : </strong> {{ product.fin_prdt_nm }}</p>
+        <p><strong>상품 설명 : </strong> {{ product.etc_note || '없음' }}</p>
+        <p><strong>가입 자격 : </strong> {{ product.join_member || '제한 없음' }}</p>
+        <p><strong>가입 방법 : </strong> {{ product.join_way || '없음' }}</p>
+        <p><strong>최고 한도 : </strong> {{ product.max_limit || '제한 없음' }}</p>
+        <p><strong>특별 조건 : </strong> {{ product.spcl_cnd || '없음' }}</p>
+
+        <hr class="divider">
+        
+        <p><strong>금리 유형:</strong> {{ product.intr_rate_type_nm }}</p>
+        <p><strong>금리:</strong> {{ product.intr_rate }}%</p>
+        <p><strong>최고 금리:</strong> {{ product.intr_rate2 }}%</p>
+        <p><strong>가입 기간:</strong> {{ product.save_trm }}개월</p>
       </div>
-      <p>{{ product.type }}</p>
-      <p>{{ product.kor_co_nm }}</p>
-      <p>{{ product.fin_prdt_nm }}</p>
-      <p>{{ product.etc_note }}</p>
-      <p>{{ product.join_member }}</p>
-      <p>{{ product.join_way }}</p>
-      <p>{{ product.max_limit }}</p>
-      <p>{{ product.spcl_cnd }}</p>
-      <hr>
-      <p>{{ product.intr_rate_type_nm }}</p>
-      <p>{{ product.intr_rate }}</p>
-      <p>{{ product.intr_rate2 }}</p>
-      <p>{{ product.save_trm }}</p>
+
+      <div class="product-actions">
+        <button v-if="counterStore.isLogin && !isInUserProducts" @click="addUserProduct(product)" class="action-btn add-btn">관심상품 추가</button>
+        <button v-if="counterStore.isLogin && isInUserProducts" @click="removeUserProduct(product)" class="action-btn remove-btn">관심목록에서 삭제</button>
+      </div>
+      
+      <div class="back-button">
+      <RouterLink :to="{ name: 'ProductsView' }">
+        <button>뒤로가기</button>
+      </RouterLink>
+    </div>
     </div>
   </div>
 </template>
@@ -31,23 +45,25 @@
   import { useRoute } from 'vue-router';
   import axios from 'axios';
 
-  const route = useRoute()
-  const store = useProductStore()
-  const counterStore = useCounterStore()
-  const product = ref(null)
+  const route = useRoute();
+  const store = useProductStore();
+  const counterStore = useCounterStore();
+  const product = ref(null);
+  
   const isInUserProducts = computed(() => {
-    return store.userProducts.some(e => e === product.value?.id)
-  })
+    return store.userProducts.some(e => e === product.value?.id);
+  });
+  
   onMounted(() => {
     axios({
       method: 'get',
       url: `${store.API_URL}/api/v1/finlife/products/${route.params.productId}/`
     })
     .then(res => {
-      product.value = res.data
+      product.value = res.data;
     })
-    .catch(err => console.log(err))
-  })
+    .catch(err => console.log(err));
+  });
 
   const addUserProduct = (prdt) => {
     axios({
@@ -58,11 +74,10 @@
       }
     })
     .then(res => {
-      console.log(res.data)
-      counterStore.getUser()
-    })
-    
-  }
+      console.log(res.data);
+      counterStore.getUser();
+    });
+  };
 
   const removeUserProduct = (prdt) => {
     axios({
@@ -73,17 +88,120 @@
       }
     })
     .then(res => {
-      console.log(res.data)
-      counterStore.getUser()
-    })
-    
-  }
-  
-  
-
-
+      console.log(res.data);
+      counterStore.getUser();
+    });
+  };
 </script>
 
 <style scoped>
+.product-detail {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.product-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.product-info {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-details p {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.product-details strong {
+  color: #333;
+}
+
+.divider {
+  margin: 20px 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.back-button {
+  display: flex;
+  justify-content: flex-end; /* 뒤로가기 버튼을 오른쪽 정렬 */
+  margin-top: 20px; /* 위와의 간격 조절 */
+}
+
+.back-button button {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #ccc;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button button:hover {
+  background-color: #bbb;
+}
+
+.action-btn {
+  padding: 11px 5px;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  width: 160px;
+  font-weight: bold;
+}
+
+.add-btn {
+  background-color: #9ABF80;
+  color: white;
+}
+
+.add-btn:hover {
+  background-color: #588f31;
+}
+
+.remove-btn {
+  background-color: #913d3d;
+  color: white;
+}
+
+.remove-btn:hover {
+  background-color: #662828;
+}
+
+@media (max-width: 600px) {
+  .product-title {
+    font-size: 1.5rem;
+  }
   
+  .product-info {
+    padding: 15px;
+  }
+
+  .product-details p {
+    font-size: 1rem;
+  }
+
+  .action-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
 </style>

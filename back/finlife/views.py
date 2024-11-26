@@ -5,12 +5,16 @@ import requests
 import certifi
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.conf import settings
 from pprint import pprint
-BASE_URL = "http://finlife.fss.or.kr/finlifeapi/"
+from requests.exceptions import RequestException, Timeout, ConnectionError
+from decouple import config
 
 
+BASE_URL = "https://finlife.fss.or.kr/finlifeapi/"
 # import openai
 # from django.conf import settings
 # from rest_framework.views import APIView
@@ -139,23 +143,42 @@ def get_detail(request, product_id):
 
 
 
-
 @api_view(['GET'])
 def exchange(request):
-    url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'
+    url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON"
     params = {
-        'authkey': 'Ar4GiPppFvZOywPha5Vwi6gVPAGr5Q1T',
+        'authkey': "Ar4GiPppFvZOywPha5Vwi6gVPAGr5Q1T",
         'data': 'AP01',
     }
-    response = requests.get(url=url, params=params).json()
+
+    try:
+        # API 호출 및 타임아웃 설정
+        response = requests.get(url=url, params=params, verify=False, timeout=10)
+        response.raise_for_status()  # HTTP 상태 코드가 4xx나 5xx일 경우 예외 발생
+        data = response.json()
+
+    except Timeout:
+        # 타임아웃 오류 처리
+        return Response({"error": "API 요청이 시간이 초과되었습니다. 다시 시도해주세요."}, status=408)
+
+    except ConnectionError:
+        # 연결 오류 처리
+        return Response({"error": "서버와의 연결이 실패했습니다. 네트워크를 확인해주세요."}, status=503)
+
+    except RequestException as e:
+        # 다른 요청 오류 처리 (예: 잘못된 URL, 잘못된 요청 등)
+        return Response({"error": f"요청 중 오류가 발생했습니다: {str(e)}"}, status=500)
+
+    # API 응답 정상적으로 받아온 후 처리
     ex_fields = Exchange._meta.get_fields()
-    
-    for result in response:
+
+    for result in data:
         ex_check_datas = dict()
         for field in ex_fields:
             if result.get(field.name, False):
                 ex_check_datas[field.name] = result.get(field.name).replace(',', '')
         
+        # 중복된 데이터가 있는지 확인하고, 없으면 저장
         if Exchange.objects.filter(**ex_check_datas).exists():
             continue
         
@@ -164,7 +187,96 @@ def exchange(request):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
 
+    # 모든 환율 데이터 반환
     exchanges = Exchange.objects.all()
     serializer = ExchangeSerializer(exchanges, many=True)
     return Response(serializer.data)
+
+
+# @api_view(['GET'])
+# def exchange(request):
+#     url = config('EXCHANGE_API_URL') # .env에서 URL 로드
+#     params = {
+#         'authkey': config('EXCHANGE_API_KEY'),  # .env에서 API 키 로드
+#         'data': 'AP01',
+#     }
+
+#     try:
+#         # API 호출 및 타임아웃 설정
+#         response = requests.get(url=url, params=params, verify=False, timeout=10)
+#         response.raise_for_status()  # HTTP 상태 코드가 4xx나 5xx일 경우 예외 발생
+#         data = response.json()
+
+#     except Timeout:
+#         # 타임아웃 오류 처리
+#         return Response({"error": "API 요청이 시간이 초과되었습니다. 다시 시도해주세요."}, status=408)
+
+#     except ConnectionError:
+#         # 연결 오류 처리
+#         return Response({"error": "서버와의 연결이 실패했습니다. 네트워크를 확인해주세요."}, status=503)
+
+#     except RequestException as e:
+#         # 다른 요청 오류 처리 (예: 잘못된 URL, 잘못된 요청 등)
+#         return Response({"error": f"요청 중 오류가 발생했습니다: {str(e)}"}, status=500)
+
+#     # API 응답 정상적으로 받아온 후 처리
+#     ex_fields = Exchange._meta.get_fields()
+
+#     for result in data:
+#         ex_check_datas = dict()
+#         for field in ex_fields:
+#             if result.get(field.name, False):
+#                 ex_check_datas[field.name] = result.get(field.name).replace(',', '')
+        
+#         # 중복된 데이터가 있는지 확인하고, 없으면 저장
+#         if Exchange.objects.filter(**ex_check_datas).exists():
+#             continue
+        
+#         serializer = ExchangeSerializer(data=ex_check_datas)
+        
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+
+#     # 모든 환율 데이터 반환
+#     exchanges = Exchange.objects.all()
+#     serializer = ExchangeSerializer(exchanges, many=True)
+#     return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+# @api_view(['GET'])
+# def exchange(request):
+#     url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'
+#     params = {
+#         'authkey': 'Ar4GiPppFvZOywPha5Vwi6gVPAGr5Q1T',
+#         'data': 'AP01',
+#     }
+#     response = requests.get(url=url, params=params, verify=False).json()
+#     ex_fields = Exchange._meta.get_fields()
+    
+#     for result in response:
+#         ex_check_datas = dict()
+#         for field in ex_fields:
+#             if result.get(field.name, False):
+#                 ex_check_datas[field.name] = result.get(field.name).replace(',', '')
+        
+#         if Exchange.objects.filter(**ex_check_datas).exists():
+#             continue
+        
+#         serializer = ExchangeSerializer(data=ex_check_datas)
+        
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+
+#     exchanges = Exchange.objects.all()
+#     serializer = ExchangeSerializer(exchanges, many=True)
+#     return Response(serializer.data)
+
+
 

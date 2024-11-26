@@ -5,7 +5,7 @@ from finlife.models import Product
 
 class User(AbstractUser):
     
-    nickname = models.CharField(max_length=100)
+    nickname = models.CharField(null=True, blank=True, max_length=100)
 
 ## 개인정보 필드
     # 나이

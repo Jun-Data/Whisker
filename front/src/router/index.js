@@ -10,6 +10,7 @@ import ProductsView from '@/views/ProductsView.vue'
 import ExchangeView from '@/views/ExchangeView.vue'
 import MapView from '@/views/MapView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import ProfileUpdateView from '@/views/ProfileUpdateView.vue'
 // import DepositDetailView from '@/views/ProductDetailView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 import ArticleUpdateView from '@/views/ArticleUpdateView.vue'
@@ -83,6 +84,11 @@ const router = createRouter({
       name: 'ProfileView',
       component: ProfileView
     },
+    {
+      path: '/profile/update',
+      name: 'ProfileUpdateView',
+      component: ProfileUpdateView
+    },
     // {
     //   path: '/products/:type/:productId/:optionId',
     //   name: 'DepositDetailView',
@@ -148,15 +154,18 @@ const router = createRouter({
   ],
 })
 
+// 전역 네비게이션 가드
 router.beforeEach((to, from) => {
   const store = useCounterStore()
-  // 만약 이동하는 목적지가 메인 페이지이면서
+  // 만약 이동하는 목적지가 게시글 페이지이면서
   // 현재 로그인 상태가 아니라면 로그인 페이지로 보냄
-  if (to.name === 'ArticleView' && !store.isLogin) {
+  if (
+    !store.isLogin &&
+    (to.name === 'RecView' || to.path === '/create' || to.path === '/profile' ) 
+  ) {
     window.alert('로그인이 필요합니다.')
     return { name: 'LogInView' }
   }
-
   // 만약 로그인 사용자가 회원가입 또는 로그인 페이지로 이동하려고 하면
   // 메인 페이지로 보냄
   if ((to.name === 'SignUpView' || to.name === 'LogInView') && (store.isLogin)) {

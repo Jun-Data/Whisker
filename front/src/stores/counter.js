@@ -2,7 +2,6 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { useProductStore } from './product'
 
 export const useCounterStore = defineStore('counter', () => {
   const articles = ref([])
@@ -98,7 +97,6 @@ export const useCounterStore = defineStore('counter', () => {
       })
   }
 
-  const productStore = useProductStore()
   // 로그인 요청 액션
   const logIn = function (payload) {
     // const username = payload.username

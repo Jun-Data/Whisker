@@ -21,8 +21,13 @@ def delete_user(request, user_pk):
 def update_user(request, user_pk):
     if request.method == 'PUT':
         user = User.objects.get(pk=user_pk)
-        serializer = CustomUserUpdateSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
+        data = {}
+        # print(request.data)
+        for k in request.data:
+            if request.data[k]:
+                data[k] = request.data[k]
+        serializer = CustomUserUpdateSerializer(user, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
 

@@ -309,122 +309,147 @@ export const useMapStore = defineStore("map", () => {
     "SC은행",
     "우체국",
     "씨티은행",
-    "KEB하나은행",
+    "하나은행",
     "대구은행",
     "신한은행",
     "부산은행",
   ]);
   
-  // 지도 상태
-  const map = ref(null);
-  const markers = ref([]);
-  const latitude = ref(0);
-  const longitude = ref(0);
+   // 지도 상태
+   const map = ref(null);
+   const markers = ref([]); // 은행 마커를 위한 배열
+   const latitude = ref(0);
+   const longitude = ref(0);
+ 
+   // 카카오 지도 API 로딩 함수
+   const loadMap = () => {
+     if (!("geolocation" in navigator)) {
+       alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
+       return;
+     }
+ 
+     // 사용자의 위치 정보를 가져옵니다.
+     navigator.geolocation.getCurrentPosition(pos => {
+       latitude.value = pos.coords.latitude;
+       longitude.value = pos.coords.longitude;
+ 
+       if (window.kakao && window.kakao.maps) {
+         initMap(); // 카카오 지도 초기화
+       } else {
+         const script = document.createElement("script");
+         script.onload = () => kakao.maps.load(initMap);
+         script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=5c6ff48b64b92bb770446e41b1cc440f";
+         document.head.appendChild(script);
+       }
+     }, err => {
+       alert(err.message);
+     });
+   };
+ 
+   // 지도 초기화 함수
+   const initMap = () => {
+     const container = document.getElementById("map");
+     const options = {
+       center: new kakao.maps.LatLng(latitude.value, longitude.value),
+       level: 5,
+     };
+     map.value = new kakao.maps.Map(container, options);
+ 
+     // 은행 검색
+     searchBanks();
+   };
+ 
+// 현재 열린 infoWindow를 추적할 변수
+let currentInfoWindow = null;
 
-  // 카카오 지도 API 로딩 함수
-  const loadMap = () => {
-    if (!("geolocation" in navigator)) {
-      alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
-      return;
-    }
+// 은행 마커 표시 함수
+const displayBankMarker = (places) => {
+  // 기존 은행 마커 제거
+  markers.value.forEach((marker) => {
+    marker.setMap(null); // 지도에서 기존 마커 제거
+  });
+  markers.value = []; // 마커 배열 초기화
 
-    // 사용자의 위치 정보를 가져옵니다.
-    navigator.geolocation.getCurrentPosition(pos => {
-      latitude.value = pos.coords.latitude;
-      longitude.value = pos.coords.longitude;
-
-      if (window.kakao && window.kakao.maps) {
-        initMap(); // 카카오 지도 초기화
-      } else {
-        const script = document.createElement("script");
-        script.onload = () => kakao.maps.load(initMap);
-        script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=5c6ff48b64b92bb770446e41b1cc440f";
-        document.head.appendChild(script);
-      }
-    }, err => {
-      alert(err.message);
-    });
-  };
-
-  // 지도 초기화 함수
-  const initMap = () => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(latitude.value, longitude.value),
-      level: 5,
-    };
-    map.value = new kakao.maps.Map(container, options);
-
-    // 사용자 위치에 마커 표시
-    displayMarker([[latitude.value, longitude.value]]);
-
-    // 주변 은행 검색
-    searchBanks();
-  };
-
-  // 마커 표시 함수
-  const displayMarker = (markerPositions) => {
-    if (markers.value.length > 0) {
-      markers.value.forEach((marker) => marker.setMap(null));
-    }
-
-    const positions = markerPositions.map(
-      (position) => new kakao.maps.LatLng(...position)
-    );
-
-    if (positions.length > 0) {
-      markers.value = positions.map(
-        (position) =>
-          new kakao.maps.Marker({
-            map: map.value,
-            position,
-          })
-      );
-
-      const bounds = positions.reduce(
-        (bounds, latlng) => bounds.extend(latlng),
-        new kakao.maps.LatLngBounds()
-      );
-
-      map.value.setBounds(bounds);
-    }
-  };
-
-  // 은행을 검색하는 함수
-  const searchBanks = () => {
-    const placesService = new kakao.maps.services.Places(map.value);
-    const infowindow = new kakao.maps.InfoWindow({zIndex:1});
-
-    placesService.categorySearch('BK9', (data, status, pagination) => {
-      if (status === kakao.maps.services.Status.OK) {
-        console.log('검색된 은행:', data); // 검색된 은행 데이터 확인
-
-        data.forEach(place => {
-          displayBankMarker(place, infowindow);
-        });
-      } else {
-        console.log('은행 검색 실패:', status); // 검색 실패 시 로그
-      }
-    }, {
-      location: new kakao.maps.LatLng(latitude.value, longitude.value),
-      radius: 5000 // 5km 내 은행 검색
-    });
-  };
-
-  // 은행 마커 표시 함수
-  const displayBankMarker = (place, infowindow) => {
+  // 새로운 마커를 추가
+  places.forEach((place) => {
     const marker = new kakao.maps.Marker({
       map: map.value,
-      position: new kakao.maps.LatLng(place.y, place.x)
+      position: new kakao.maps.LatLng(place.y, place.x),
     });
 
-    // 마커 클릭 시 인포윈도우에 장소명 표시
-    kakao.maps.event.addListener(marker, 'click', () => {
-      infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+    markers.value.push(marker); // 새로 생성된 마커를 markers 배열에 추가
+
+    // 마커 클릭 시 인포윈도우에 장소명, 주소, 전화번호 및 닫기 버튼 표시
+    kakao.maps.event.addListener(marker, "click", () => {
+      // 기존에 열린 infowindow가 있으면 닫기
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
+
+      // 새로 클릭된 마커에 대한 infowindow 생성
+      const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      
+      // 전화번호가 있을 경우에만 표시하도록 수정
+      const phoneNumber = place.phone ? `전화번호 : ${place.phone}` : '';  // 전화번호 텍스트가 없으면 빈 문자열로 처리
+
+      const content = `
+        <div style="padding: 10px; font-size: 14px; line-height: 1.6; color: #333; max-width: 250px; display: flex; flex-direction: column; justify-content: space-between; height: 120px;">
+          <strong style="font-size: 16px; font-weight: bold;">${place.place_name}</strong>
+          <div style="margin-top: 10px;">
+            <p style="margin: 0; font-size: 13px;">주소 : ${place.address_name}</p>
+            <!-- 전화번호가 있을 때만 표시 -->
+            ${phoneNumber ? `<p style="margin: 0; font-size: 13px;">${phoneNumber}</p>` : ''}
+          </div>
+          <button id="close-btn" style="padding: 7px; background-color: #FF7043; color: white; border: none; border-radius: 5px; margin-top: 7px; cursor: pointer; font-size: 13px; flex-shrink: 0;">닫기</button>
+        </div>
+      `;
+      infowindow.setContent(content);
       infowindow.open(map.value, marker);
-    });
-  };
 
-  return { infos, banks, map, markers, latitude, longitude, loadMap, initMap, displayMarker, searchBanks };
-});
+      // 닫기 버튼 클릭 이벤트 등록
+      const closeBtn = document.getElementById("close-btn");
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          infowindow.close(); // 정보창 닫기
+          currentInfoWindow = null; // 열린 infoWindow를 초기화
+        };
+      }
+
+      // 현재 열린 infoWindow를 갱신
+      currentInfoWindow = infowindow;
+    });
+  });
+};
+
+// 은행 검색 함수 수정 (newBank 매개변수 추가)
+const searchBanks = (newBank = "") => {
+  const placesService = new kakao.maps.services.Places(map.value);
+  const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+  placesService.categorySearch(
+    "BK9", // 은행 카테고리
+    (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        console.log("검색된 은행:", data);
+        
+        // 은행이 선택되었을 경우, 필터링
+        if (newBank) {
+          data = data.filter(bank => bank.place_name.includes(newBank));  // 선택된 은행 이름으로 필터링
+        }
+        
+        displayBankMarker(data, infowindow); // 검색된 은행 데이터로 마커 표시
+      } else {
+        console.log("은행 검색 실패:", status);
+      }
+    },
+    {
+      location: map.value.getCenter(), // 지도 중심을 기준으로 검색
+      radius: 5000, // 5km 내 은행 검색
+    }
+  );
+};
+
+
+   return { infos, banks, map, markers, latitude, longitude, loadMap, initMap, searchBanks, displayBankMarker };
+ });
 
