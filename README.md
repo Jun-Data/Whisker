@@ -91,21 +91,13 @@
   > 금리의 경우 데이터의 범위가 0 ~ 100%, 가입기간은 1 ~ 36 등 데이터의 범위가 필드마다 상이하므로, 정규화 과정이 필요합니다.  
   > `min-max` 정규화는 데이터가 가질 수 있는 범위의 최소값과 최대값에서 데이터가 얼마나 떨어져 있는지를 계산하여 스케일을 조정하는 과정입니다.  
   - 상품의 각 필드값을 0과 1 사이의 값으로 정규화하여 계산  
-    $$
-    x_{normalized} = \frac{x - x_{min}}{x_{max} - x_{min}}
-    $$
+    $$x_{normalized} = \frac{x - x_{min}}{x_{max} - x_{min}}$$  
   - 가중치 부여 기준 또한 정규화  
-  $$
-  \alpha_{normalized} = \frac{\alpha - x_{min}}{x_{max} - x_{min}}
-  $$
+  $$\alpha_{normalized} = \frac{\alpha - x_{min}}{x_{max} - x_{min}}$$  
 - 가중치 부여 기준으로부터 정규화된 필드값의 거리 계산  
-$$
- d = abs(x_{normalized} - \alpha_{normalized})
- $$
+$$d = abs(x_{normalized} - \alpha_{normalized})$$  
 - 거리로부터 최종 점수 계산  
-$$
-score_x = \sum_i^n\frac{1}{d_i + 1} * g_x
-$$
+$$score_x = \sum_i^n\frac{1}{d_i + 1} * g_x$$  
 - $g$는 필드의 우선순위별 가중치
 - 책정되는 점수는 설정한 기준으로부터의 거리 $d$에 반비례
 - 거리가 `0`인 경우를 배제하기 위해 $d+1$을 분모로 설정
