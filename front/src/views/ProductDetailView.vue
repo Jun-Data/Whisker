@@ -166,6 +166,7 @@
 .remove-btn {
   background-color: #f44336;
   color: white;
+  padding: 12px 10px;
 }
 
 .remove-btn:hover {

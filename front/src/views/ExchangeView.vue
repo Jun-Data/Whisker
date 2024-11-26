@@ -75,7 +75,7 @@ const datas = ref([]);
 
 const fromCurrency = ref(""); // 출발 통화
 const toCurrency = ref(""); // 도착 통화
-const amount = ref(0); // 환전 금액
+const amount = ref(null); // 환전 금액
 const amountInput = ref(""); // 입력값
 const isSubmitted = ref(false);
 
@@ -102,13 +102,13 @@ const getCurrencyName = (curUnit) => {
 
 const calculateConversionAmount = computed(() => {
   if (!fromCurrency.value || !toCurrency.value || amount.value <= 0 || datas.value.length === 0) {
-    return "0"; // 기본값
+    return ""; // 기본값
   }
 
   const fromData = cleanedDatas.value.find(item => item.cur_unit === fromCurrency.value);
   const toData = cleanedDatas.value.find(item => item.cur_unit === toCurrency.value);
 
-  if (!fromData || !toData) return "0";
+  if (!fromData || !toData) return "";
 
   const fromRate = parseFloat(fromData.deal_bas_r);
   const toRate = parseFloat(toData.deal_bas_r);
@@ -132,27 +132,26 @@ const calculateConversionAmount = computed(() => {
 });
 
 const validateAmount = () => {
+  // 숫자만 입력되도록 정규식 확인
   if (!/^\d*\.?\d*$/.test(amountInput.value)) {
     alert('숫자만 입력하세요.');
-    amountInput.value = amount.value.toString();
+    amountInput.value = amount.value.toString(); // 이전 값으로 되돌림
     return;
   }
-  amount.value = parseFloat(amountInput.value) || 0;
 
-  if (amount.value < 0) {
-    alert('금액은 음수가 될 수 없습니다.');
-    amount.value = 0;
-    amountInput.value = "0";
+  // 값이 비어있는지 또는 잘못된 숫자인 경우를 체크
+  if (amountInput.value === "" || isNaN(amountInput.value)) {
+    amount.value = "";
+  } else {
+    amount.value = parseFloat(amountInput.value) || 0;
   }
 };
+
 
 const submitAmount = () => {
   if (fromCurrency.value === toCurrency.value) {
     // 출발 통화와 도착 통화가 같으면 경고 메시지
     alert('출발 통화와 도착 통화는 다르게 선택해야 합니다.');
-  } else if (amount.value <= 0) {
-    // 금액이 0보다 작거나 같으면 경고 메시지
-    alert('금액은 0보다 커야 합니다.');
   } else {
     // 유효한 경우, 환전 결과를 제출
     isSubmitted.value = true;
