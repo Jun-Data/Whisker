@@ -96,11 +96,13 @@
     $$x_{normalized} = \frac{x - x_{min}}{x_{max} - x_{min}}$$  
   - 가중치 부여 기준 또한 정규화  
   $$\alpha_{normalized} = \frac{\alpha - x_{min}}{x_{max} - x_{min}}$$  
-- 가중치 부여 기준으로부터 정규화된 필드값의 거리 계산  
+- 가중치 부여 기준으로부터 거리 계산  
 $$d = abs(x_{normalized} - \alpha_{normalized})$$  
 - 거리로부터 최종 점수 계산  
-$$score_x = \sum_i^n\frac{1}{d_i + 1} * g_x$$  
-- $g$는 필드의 우선순위별 가중치
+$$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$  
+- $score_x$: 상품 $x$의 최종 점수
+- $n$: 필드 $i$의 개수
+- $g_i$: 필드 $i$의 가중치
 - 책정되는 점수는 설정한 기준으로부터의 거리 $d$에 반비례
 - 거리가 `0`인 경우를 배제하기 위해 $d+1$을 분모로 설정
 - 모든 필드에 대해 점수를 계산하여 상품의 최종 점수에 합산
@@ -164,7 +166,7 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_x$$
   - 현재 페이지에서 출력할 상품의 목록 `products`는 반응형 데이터로 설정함
   - `products`를 정렬하는 과정에서 `products`를 참조하는 다른 `getters`의 정보가 업데이트되면서 느려지는 현상
   - `products`를 얕은 복사 후 복사한 배열을 정렬한 뒤 `products`의 값을 변경하여 해결
-## 결과
+
 ## 느낀점
 
 
