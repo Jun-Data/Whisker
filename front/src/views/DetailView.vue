@@ -2,13 +2,13 @@
   <div class="content-wrapper">
     <div v-if="article">
       <div class="article-detail">
-        <h1 class="article-title">{{ article.title }}</h1>
-        <h2 class="article-content">{{ article.content }}</h2>
+        <div class="article-title">{{ article.title }}</div>
         <p class="article-author">작성자 : {{ article.user.username }}</p>
         <p class="article-dates">
           <span>작성일시 : {{ formatDate(article.created_at) }}</span>
           <span> (수정 : {{ formatDate(article.updated_at) }})</span>
         </p>
+        <div class="article-content">{{ article.content }}</div>
         <br><br>
         <div>
           <button v-if="store.userData.username === article.user.username" @click="router.push({name: 'ArticleUpdateView', params:{id: article.id}})">수정</button>
@@ -116,7 +116,7 @@ const formatDate = (dateString) => {
 <style scoped>
 /* 콘텐츠 wrapper 스타일 */
 .content-wrapper {
-  padding: 20px;
+  padding: 60px;
   background-color: #f7f8fa;
   max-width: 800px;
   margin: 50px auto;
@@ -134,6 +134,7 @@ h1 {
 }
 
 .article-detail {
+  
   margin-bottom: 20px;
 }
 
@@ -153,6 +154,7 @@ h1 {
 
 .article-content {
   line-height: 1.5;
+  white-space: pre-line;
 }
 
 .article-dates {

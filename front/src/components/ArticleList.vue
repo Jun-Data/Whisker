@@ -15,10 +15,10 @@
     <table class="article-table">
       <thead>
         <tr>
-          <th>No</th>
-          <th>제목</th>
-          <th>글쓴이</th>
-          <th>등록일</th>
+          <th class="th-no">No</th>
+          <th class="th-title">제목</th>
+          <th class="th-user">글쓴이</th>
+          <th class="th-date">등록일</th>
         </tr>
       </thead>
       <tbody>
@@ -29,8 +29,8 @@
         class="clickable-row">
           <td>{{ index + 1 }}</td>
           <td>
-            <div class="title-cell" :title="article.title">{{ article.title }} 
-              <span v-if="article.comments_count > 0"> [ {{ article.comments_count }} ]</span>
+            <div class="title-cell" :title="article.title"><span id="article-title">{{ article.title }} </span>
+              <span id="comment-count" v-if="article.comments_count > 0"> [{{ article.comments_count }}]</span>
             </div>
           </td>
           <td>{{ article.user.username }}</td>
@@ -146,9 +146,13 @@ const goToArticleDetail = (id) => {
 
 /* 제목 셀 스타일: 텍스트 잘림 처리 */
 .title-cell {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis; /* 긴 글 줄임표 처리 */
+  display: flex;
+  justify-content: left;
+  
+  /* padding: 100; */
+  /* overflow: hidden; */
+  /* white-space: nowrap; */
+  /* text-overflow: ellipsis; 긴 글 줄임표 처리 */
 }
 
 /* 테이블 헤더 스타일 */
@@ -167,5 +171,30 @@ const goToArticleDetail = (id) => {
 
 .clickable-row:hover {
   background-color: #f1f1f1; /* 행 호버 색상 */
+}
+
+.th-no {
+  width: 50px;
+}
+.th-title {
+  width: 200px;
+}
+.th-user {
+  width: 50px;
+}
+.th-date {
+  width: 100px;
+}
+
+#comment-count {
+  white-space: nowrap;
+  font-weight: 600;
+  color: #da0000;
+}
+#article-title {
+  padding: 0 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* 긴 글 줄임표 처리 */
 }
 </style>

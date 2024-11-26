@@ -1,23 +1,24 @@
 <template>
+  
   <div class="product-table-container">
     <table class="product-table">
       <thead>
         <tr>
-          <th>유형</th>
-          <th>금융회사명</th>
-          <th>상품명</th>
-          <th>금리유형</th>
-          <th>금리
+          <th class="th-type">유형</th>
+          <th class="th-company-name">금융회사명</th>
+          <th class="th-product-name">상품명</th>
+          <th class="th-intr-type">금리유형</th>
+          <th class="th-intr">금리
             <button class="sort-button" @click="runSort('intr')">
               {{ descInterest > 0 ? '▼' : '▲' }}
             </button>
           </th>
-          <th>최고우대금리
+          <th class="th-intr2">최고우대금리
             <button class="sort-button" @click="runSort('intr2')">
               {{ descInterest2 > 0 ? '▼' : '▲' }}
             </button>
           </th>
-          <th>가입기간
+          <th class="th-term">가입기간
             <button class="sort-button" @click="runSort('term')">
               {{ descTerm > 0 ? '▼' : '▲' }}
             </button>
@@ -31,6 +32,8 @@
           :product="product"/>
       </tbody>
     </table>
+
+    
   </div>
 </template>
 
@@ -73,6 +76,7 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 1000px;
 }
 
 /* 테이블 스타일 */
@@ -122,10 +126,31 @@
 }
 
 /* 제목 셀 스타일 */
-.product-table th,
+/* .product-table th,
 .product-table td {
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
+} */
+.th-type {
+  width: 70px;
+}
+.th-company-name {
+  width: 140px;
+}
+.th-product-name {
+  width: 160px;
+}
+.th-intr-type {
+  width: 100px;
+}
+.th-intr {
+  width: 100px;
+}
+.th-intr2 {
+  width: 160px;
+}
+.th-term {
+  width: 130px;
 }
 </style>
