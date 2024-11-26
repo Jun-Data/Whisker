@@ -4,14 +4,13 @@
       <span id="company-name">{{ product.kor_co_nm }}</span>
       <span id="product-name">{{ product.fin_prdt_nm }}</span>
     </div>
-    
-    <td>{{ product.type === 'deposit' ? '예금' : '적금' }}</td>
-    
-    
-    <td>{{ product.intr_rate_type_nm }}</td>
-    <td>금리 {{ product.intr_rate }}%</td>
-    <td>최고우대금리 {{ product.intr_rate2 }}%</td>
-    <td>가입기간 {{ product.save_trm }}개월</td>
+    <div class="product-details">
+      <span>{{ product.type === 'deposit' ? '예금' : '적금' }}</span>
+      <span>{{ product.intr_rate_type_nm }}</span>
+      <span>금리 {{ product.intr_rate }}%</span>
+      <span>최고우대금리 {{ product.intr_rate2 }}%</span>
+      <span>가입기간 {{ product.save_trm }}개월</span>
+    </div>
   </div>
 </template>
 
@@ -25,6 +24,7 @@
 <style scoped>
 /* 각 행 스타일 */
 .product-item {
+  /* display: flex; */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
@@ -34,8 +34,25 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   text-align: center;
+  
+}
+.product-header {
+  display: flex;
+  justify-content: center;
+  
+}
+.product-details {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 10px;
+
+}
+.product-details span {
+  margin: 0 10px;
+
 }
 .product-header #product-name {
+  
   font-weight: bold;
   margin-left: 10px;
   font-size: larger;
@@ -50,7 +67,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.product-item td {
+.product-item {
   padding: 12px 16px;
   text-align: center;
   vertical-align: middle;

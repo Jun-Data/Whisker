@@ -60,21 +60,23 @@ export const useProductStore = defineStore('product', () => {
 
 
   const sortProducts = (col, desc) => {
+    const sorted = products.value.slice()
     if (col === 'intr') {
-        products.value.sort((a, b) => {
+      sorted.sort((a, b) => {
         return (a.intr_rate - b.intr_rate) * desc.value;
       })
     }
     else if (col === 'intr2') {
-        products.value.sort((a, b) => {
+      sorted.sort((a, b) => {
         return (a.intr_rate2 - b.intr_rate2) * desc.value;
       })
     }
     else if (col === 'term') {
-        products.value.sort((a, b) => {
+      sorted.sort((a, b) => {
         return (a.save_trm - b.save_trm) * desc.value;
       })
     }
+    products.value = sorted
   }
   const priorityStandard = ['earn', 'family', 'saving','term', 'know']
   const standardToFields = {
