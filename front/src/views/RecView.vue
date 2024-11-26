@@ -6,7 +6,9 @@
     
     <!-- 이미지 영역 -->
     <div class="image-container">
-      <img :src="cat_2" alt="Logo" class="main-image" />
+      <!-- <img :src="cat_2" alt="Logo" class="main-image" /> -->
+      <img :src="gantek" alt="Logo" class="main-image" />
+
     </div>
     
     <!-- 버튼 영역 -->
@@ -17,7 +19,8 @@
 </template>
 
 <script setup>
-import cat_2 from '@/assets/cat_2.jpg'; // assets 폴더에서 이미지 import
+// import cat_2 from '@/assets/cat_2.jpg'; // assets 폴더에서 이미지 import
+import gantek from '@/assets/gantek.gif'; // assets 폴더에서 이미지 import
 import { useProductStore } from '@/stores/product';
 
 const store = useProductStore();

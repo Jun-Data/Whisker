@@ -1,6 +1,6 @@
 <template>
   <div class="game-container">
-    <h1>나에게 간택당하고 싶다면 7개의 문항에 대답해</h1>
+    <h1>나에게 간택당하고 싶다면 7개의 문항에 대한 답이 필요해!</h1>
     <!-- {{ weights }} -->
     <nav class="nav-links">
       <!-- 게임 1번 버튼 -->

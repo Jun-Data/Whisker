@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h3>3개의 선택지 중 하나를 선택해</h3>
+      <h6>3개의 선택지 중 하나를 선택해주세요</h6>
       <h1>나는 집순이 고양이야. 내가 지낼 집은 어떤 곳이지?</h1>
   
       <div class="options">
