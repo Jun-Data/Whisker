@@ -335,7 +335,8 @@ export const useMapStore = defineStore("map", () => {
       } else {
         const script = document.createElement("script");
         script.onload = () => kakao.maps.load(initMap);
-        script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=5c6ff48b64b92bb770446e41b1cc440f";
+        const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${KAKAO_API_KEY}`;
         document.head.appendChild(script);
       }
     }, err => {

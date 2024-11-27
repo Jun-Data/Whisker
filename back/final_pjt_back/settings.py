@@ -1,21 +1,23 @@
 from pathlib import Path
 
-import os
-import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# #환경변수를 불러올 수 있는 상태로 설정
-# env = environ.Env(DEBUG=(bool,True))
+import os
+import environ
 
-# #환경변수를 읽어올 파일을 설정
-# environ.Env.read_env(
-#     env_file=os.path.join(BASE_DIR, '.env')
-# )
+#환경변수를 불러올 수 있는 상태로 설정
+env = environ.Env(DEBUG=(bool,True))
 
-# # 환경변수를 읽어온다
-# API_KEY = env('API_KEY')
+#환경변수를 읽어올 파일을 설정
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
+
+# 환경변수를 읽어온다
+PRODUCTS_API_KEY = env('PRODUCTS_API_KEY')
+EXCHANGE_API_KEY = env('EXCHANGE_API_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
