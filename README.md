@@ -44,7 +44,9 @@
 
 
 #### 사용자 성향 파악
-![alt text](./readme_images/gameview.png)
+<!-- ![alt text](./readme_images/gameview.png) -->
+<img src="https://github.com/user-attachments/assets/2eae4907-631b-41a8-9127-a0e996ee9712" width="500px">
+
 - 총 7개로 질문지를 구성하고, 선택에 해당하는 정보 저장
 - 선택에 따라 사용자 정보를 각각 1점, 5점, 10점으로 구분
 
@@ -116,14 +118,19 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 
 ### 필수 기능
 #### 메인페이지
+<img src="https://github.com/user-attachments/assets/e0c4ae96-6604-4dcb-b4ca-db804bddeab3" width="500px">
+
 - 서비스와 세부 기능의 간략한 소개글 제공
 - JS 라이브러리 `Swiper`를 사용하여 슬라이더 생성
   - `coverflow` 효과와 `pagination`, `navigation` 모듈을 사용
   - `assets` 경로의 이미지 및 탬플릿 파일들을 가져옴
 - 애니메이션 라이브러리인 `GSAP`를 사용하여 페이지 로드 시 텍스트 애니메이션을 적용
   - .headline-1과 .headline-2에 효과를 추가
-- 웹 아이콘 라이브러리 `FontAwesome`을 사용하여 직관적인 아이콘 적용 
+- 웹 아이콘 라이브러리 `FontAwesome`을 사용하여 직관적인 아이콘 적용
+
 #### 회원 커스터마이징
+<img src="https://github.com/user-attachments/assets/6fed6548-f5e4-4261-834a-541a056c7c3c" width="500px">
+
 - `allauth`, `dj-rest-auth` 라이브러리 사용
 - `serializer`, `AccountAdapter` 커스터마이징
   - 회원가입 및 수정시 기본 필드 외 입력받을 필드 정의
@@ -133,8 +140,10 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
   - `nickname(Char)`
   - `products(ManyToMany)`
     - 가입한 금융상품 목록
+
 #### 예적금 금리 비교
-![alt text](/readme_images/desav.png)
+<img src="https://github.com/user-attachments/assets/e5748a23-2f36-4cd7-bfae-09158983b0af" width="500px">
+<!-- ![alt text](/readme_images/desav.png) -->
 1. 상품 조회
 - `유형`, `금융회사명`, `상품명`, `금리유형` 필터링 기능 제공
 2. 현재 제공되는 모든 상품 개수 출력
@@ -146,7 +155,9 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - 찜 목록 추가 기능 구현
 5. 페이지네이션
 - `computed`를 활용해 필터링 후에도 재계산되도록 구현
+
 #### 환율 계산기
+<img src="https://github.com/user-attachments/assets/a56f1f61-c0ee-4f13-b914-daddf29f74b1" width="500px">
 - 수출입은행 오픈 `API` 데이터 활용
  - `apikey` 는 외부에 노출되면 안되므로 `.env`에서 관리 
  - `useCounterStore()`로 Vuex store를 가져오고, `store.getExchange()`를 통해 환율 데이터를 받아와 사용
@@ -156,20 +167,26 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
   - 입력값 검증 및 `alert`로 알림
 - 순서 변경 기능 추가
   - 변환하고자 하는 두 통화가 같을 경우 사용자에게 `alert`로 알림
+
 #### 근처 은행 검색
+<img src="https://github.com/user-attachments/assets/dd04391c-f0aa-46b4-a672-9ae448d56ecf" width="500px">
 - `kakao map API` 활용
 -  Django에서 `apikey` 환경변수 사용하기 위해 `django-environ` 패키지 설치
 - `Pinia` 상태 관리 라이브러리를 사용하여 도시 및 은행 정보를 중앙 집중식으로 관리
 - 기본적으로 근처에 있는 은행 목록을 핀으로 표시
 - 특정 시/군/구의 근처 은행을 드롭다운에서 조회 가능
 - 은행명으로 조회 가능
+
 #### 커뮤니티
+<img src="https://github.com/user-attachments/assets/44b52859-856c-4acc-9702-d5f1c5695791" width="500px">
 - 사용자들이 소통할 수 있는 게시판 기능 구현
 - 게시글 생성, 수정, 삭제
   - 작성자만 수정, 삭제 가능
 - 댓글 기능 구현
 - 게시글 제목에 댓글 수 출력
+
 #### 프로필 페이지
+<img src="https://github.com/user-attachments/assets/1a270349-8ebf-4597-967f-552727b03a7b" width="500px">
 - 유저 정보 조회
 - 회원정보 수정 페이지에서 수정 가능
 - 유저가 가입한 상품 리스트 출력

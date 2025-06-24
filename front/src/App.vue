@@ -2,7 +2,7 @@
   <header class="header bg-light shadow-sm py-3">
     <div class="container d-flex justify-content-between align-items-center">
       <!-- 로고 (왼쪽 정렬) -->
-      <img :src="logo" alt="Logo" width="145" height="100" class="ms-0">
+      <img :src="logo" alt="Logo" width="120" height="120">
 
       <!-- 네비게이션 메뉴 -->
       <nav class="navbar navbar-expand-lg">
