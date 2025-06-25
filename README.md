@@ -40,12 +40,12 @@
 ## 주요 기능
 ### 추천 알고리즘
 - 사용자 정보를 기반으로 가중치를 구하고 가중치가 가장 높은 상품을 추천
-  - 선택형 게임을 통해 사용자의 성향을 파악하고, 그에 따라 가중치 계산
+- 선택형 게임을 통해 사용자의 성향을 파악하고, 그에 따라 가중치 계산
 
 
 #### 사용자 성향 파악
-<!-- ![alt text](./readme_images/gameview.png) -->
-<img src="https://github.com/user-attachments/assets/2eae4907-631b-41a8-9127-a0e996ee9712" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/9add6122-ded1-4757-96fd-4839b228232e"></video>
+
 
 - 총 7개로 질문지를 구성하고, 선택에 해당하는 정보 저장
 - 선택에 따라 사용자 정보를 각각 1점, 5점, 10점으로 구분
@@ -56,6 +56,7 @@
 - 동일한 틀 안에서는 사용자 점수가 클수록 가중치 부여
   - ex) `earn`(수입) 1점, `family`(가족구성원 수) 5점 => `family`에 더 큰 가중치 부여
 - 이때의 가중치는 `1 - 우선순위 / 목록 수`로 계산
+
 #### 사용자의 점수에 따른 가중치 부여 기준
 > 상품의 필드값이 해당 기준에 가까울수록 높은 점수를 부여합니다.  
 > 제한 없음 또는 기준 없음은 점수를 부여하지 않습니다.
@@ -91,6 +92,7 @@
   - 5점: 기준 없음
   - 10점: `금융상품설명`필드의 길이, `가입제한`, `우대조건`의 길이
 - 금융상품 이해도가 높으면 상품설명, 가입제한 기준 및 우대조건을 면밀하게 확인 가능
+
 #### 가중치 계산
 - `min-max` 정규화
   > 금리의 경우 데이터의 범위가 0 ~ 100%, 가입기간은 1 ~ 36 등 데이터의 범위가 필드마다 상이하므로, 정규화 과정이 필요합니다.  
@@ -118,7 +120,7 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 
 ### 필수 기능
 #### 메인페이지
-<img src="https://github.com/user-attachments/assets/e0c4ae96-6604-4dcb-b4ca-db804bddeab3" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/8b1321c6-5866-4237-805a-2306f3a83d2e"></video>
 
 - 서비스와 세부 기능의 간략한 소개글 제공
 - JS 라이브러리 `Swiper`를 사용하여 슬라이더 생성
@@ -129,7 +131,7 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - 웹 아이콘 라이브러리 `FontAwesome`을 사용하여 직관적인 아이콘 적용
 
 #### 회원 커스터마이징
-<img src="https://github.com/user-attachments/assets/6fed6548-f5e4-4261-834a-541a056c7c3c" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/5d288810-cd39-4e14-9d3b-9ebd6f558d34"></video>
 
 - `allauth`, `dj-rest-auth` 라이브러리 사용
 - `serializer`, `AccountAdapter` 커스터마이징
@@ -142,8 +144,8 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
     - 가입한 금융상품 목록
 
 #### 예적금 금리 비교
-<img src="https://github.com/user-attachments/assets/e5748a23-2f36-4cd7-bfae-09158983b0af" width="500px">
-<!-- ![alt text](/readme_images/desav.png) -->
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/3ec13cbe-1212-4d0f-879d-ca838e59c750"></video>
+
 1. 상품 조회
 - `유형`, `금융회사명`, `상품명`, `금리유형` 필터링 기능 제공
 2. 현재 제공되는 모든 상품 개수 출력
@@ -157,7 +159,8 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - `computed`를 활용해 필터링 후에도 재계산되도록 구현
 
 #### 환율 계산기
-<img src="https://github.com/user-attachments/assets/a56f1f61-c0ee-4f13-b914-daddf29f74b1" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/829a6485-04db-4bd4-93d6-7d041dc3969e"></video>
+
 - 수출입은행 오픈 `API` 데이터 활용
  - `apikey` 는 외부에 노출되면 안되므로 `.env`에서 관리 
  - `useCounterStore()`로 Vuex store를 가져오고, `store.getExchange()`를 통해 환율 데이터를 받아와 사용
@@ -169,7 +172,8 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
   - 변환하고자 하는 두 통화가 같을 경우 사용자에게 `alert`로 알림
 
 #### 근처 은행 검색
-<img src="https://github.com/user-attachments/assets/dd04391c-f0aa-46b4-a672-9ae448d56ecf" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/3d4bdaa7-cd0f-47b8-baba-6823983ce1ce"></video>
+
 - `kakao map API` 활용
 -  Django에서 `apikey` 환경변수 사용하기 위해 `django-environ` 패키지 설치
 - `Pinia` 상태 관리 라이브러리를 사용하여 도시 및 은행 정보를 중앙 집중식으로 관리
@@ -178,7 +182,8 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - 은행명으로 조회 가능
 
 #### 커뮤니티
-<img src="https://github.com/user-attachments/assets/44b52859-856c-4acc-9702-d5f1c5695791" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/bc0fb8c5-e3d2-41c9-9149-0c585fd262cb"></video>
+
 - 사용자들이 소통할 수 있는 게시판 기능 구현
 - 게시글 생성, 수정, 삭제
   - 작성자만 수정, 삭제 가능
@@ -186,12 +191,14 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - 게시글 제목에 댓글 수 출력
 
 #### 프로필 페이지
-<img src="https://github.com/user-attachments/assets/1a270349-8ebf-4597-967f-552727b03a7b" width="500px">
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/59a3cde1-1460-4f04-94ad-3ac5226f6ffc"></video>
+
 - 유저 정보 조회
 - 회원정보 수정 페이지에서 수정 가능
 - 유저가 가입한 상품 리스트 출력
   - 상품을 클릭하면 상세페이지로 이동
 - `Chart.js`로 상품별 금리, 최고우대금리를 그래프로 보여줌
+
 ## 생성형 AI
 - 적절한 프롬프트를 통해 게임 선택지 생성
 - 상품목록 정렬의 비효율성 개선
