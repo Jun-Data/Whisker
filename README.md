@@ -131,7 +131,7 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - 웹 아이콘 라이브러리 `FontAwesome`을 사용하여 직관적인 아이콘 적용
 
 #### 회원 커스터마이징
-<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/5d288810-cd39-4e14-9d3b-9ebd6f558d34"></video>
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/59a3cde1-1460-4f04-94ad-3ac5226f6ffc"></video>
 
 - `allauth`, `dj-rest-auth` 라이브러리 사용
 - `serializer`, `AccountAdapter` 커스터마이징
@@ -191,7 +191,7 @@ $$score_x = \sum_i^n\frac{1}{d_i + 1} * g_i$$
 - 게시글 제목에 댓글 수 출력
 
 #### 프로필 페이지
-<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/59a3cde1-1460-4f04-94ad-3ac5226f6ffc"></video>
+<video width="100%" autoplay loop muted src="https://github.com/user-attachments/assets/5d288810-cd39-4e14-9d3b-9ebd6f558d34"></video>
 
 - 유저 정보 조회
 - 회원정보 수정 페이지에서 수정 가능
